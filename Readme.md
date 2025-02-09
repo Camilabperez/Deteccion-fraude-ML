@@ -1,6 +1,30 @@
+1. Iniciar docker desktop
+
+2. Ejecutar contenedor:
+docker-compose up -d
+- checkear con docker ps si kafka inicio
+
+3. Publicar API: 
+cd kafka
+python -m uvicorn consumer:app --reload
+
+4. Enviar mensajefvvv del producer:
+cd kafka
+python producer.py
+
+5. Para usar la API, en powershell:  
+curl.exe -X 'GET' 'http://127.0.0.1:8000/consume' -H 'accept: application/json'
+
 # Kakfa
 
-docker-compose up -d
+
+# Postgres
+Server: localhost
+Database: postgres
+Port: 5433
+Username: postgres
+Contraseña para usuario postgres: admin
+
 
 # Fraud Detection Dataset
 

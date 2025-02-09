@@ -1,0 +1,5 @@
+# Ignorar todo por defecto
+kafka\__pycache__
+mlruns
+
+# Permitir los directorios importantes !0/

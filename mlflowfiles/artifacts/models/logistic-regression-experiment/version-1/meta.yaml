@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1739113125478
+current_stage: None
+description: null
+last_updated_timestamp: 1739113125478
+name: logistic-regression-experiment
+run_id: ca21e589a5664e089bc9ef19f286e6e1
+run_link: null
+source: file:///c:/Users/camil/OneDrive/Escritorio/Tesis/proyectos/main/mlruns/1/ca21e589a5664e089bc9ef19f286e6e1/artifacts/logistic_regression_model
+status: READY
+status_message: null
+storage_location: file:///c:/Users/camil/OneDrive/Escritorio/Tesis/proyectos/main/mlruns/1/ca21e589a5664e089bc9ef19f286e6e1/artifacts/logistic_regression_model
+user_id: null
+version: 1

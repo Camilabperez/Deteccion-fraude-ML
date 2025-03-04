@@ -19,11 +19,31 @@ curl.exe -X 'GET' 'http://127.0.0.1:8000/consume' -H 'accept: application/json'
 
 
 # Postgres
+Para iniciar desde terminal:
+docker exec -it main-postgres-1 bash
+psql -U user -d transactions_db
+
 Server: localhost
-Database: postgres
-Port: 5433
-Username: postgres
-Contraseña para usuario postgres: admin
+Port: 5432
+POSTGRES_USER: user
+POSTGRES_PASSWORD: password
+POSTGRES_DB: transactions_db
+
+CREATE TABLE transacciones (
+    id SERIAL PRIMARY KEY,
+    FraudIndicator VARCHAR(50), 
+    Category INT,      
+    TransactionAmount DECIMAL(10,2), 
+    AnomalyScore DECIMAL(10,2), 
+    Amount DECIMAL(10,2),        
+    AccountBalance DECIMAL(15,2), 
+    SuspiciousFlag INT,
+    Hour INT,                    
+    gap DECIMAL(10,2),          
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+);
+
+
 
 
 # Fraud Detection Dataset

@@ -25,6 +25,11 @@ X_resampled, y_resampled = oversample(X, Y)
 metadata = SingleTableMetadata()
 metadata.detect_from_dataframe(X)
 
+metadata2 = SingleTableMetadata()
+metadata2.detect_from_dataframe(cleandata)
+
+print(metadata2)
+
 ctgan = CTGANSynthesizer(metadata, 
     enforce_rounding=False,
     epochs=20,

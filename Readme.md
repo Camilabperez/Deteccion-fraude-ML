@@ -20,7 +20,7 @@ curl.exe -X 'GET' 'http://127.0.0.1:8000/consume' -H 'accept: application/json'
 
 # Postgres
 Para iniciar desde terminal:
-docker exec -it main-postgres-1 bash
+docker exec -it postgres bash
 psql -U user -d transactions_db
 
 Server: localhost
@@ -43,7 +43,13 @@ CREATE TABLE transacciones (
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
 );
 
-
+# Grafana 
+Postgre connection:
+host: postgres:5432
+db:transactions_db
+username:grafanareader
+password: admin
+tsl mode: diabled
 
 
 # Fraud Detection Dataset

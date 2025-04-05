@@ -4,18 +4,16 @@
 docker-compose up -d
 - checkear con docker ps si kafka inicio
 
-3. Publicar API: 
-cd kafka
+4. Publicar API: 
 python -m uvicorn consumer:app --reload
 
-4. Enviar mensajefvvv del producer:
-cd kafka
+5. Enviar mensaje del producer:
 python producer.py
 
-5. Para usar la API, en powershell:  
-curl.exe -X 'GET' 'http://127.0.0.1:8000/consume' -H 'accept: application/json'
+6. Para usar la API, en powershell:  
+curl.exe -X 'GET' 'http://127.0.0.1:8000/consume_continuously' -H 'accept: application/json'
 
-# Kakfa
+# 
 
 
 # Postgres
@@ -28,6 +26,8 @@ Port: 5432
 POSTGRES_USER: user
 POSTGRES_PASSWORD: password
 POSTGRES_DB: transactions_db
+
+Con "q" salgo del select
 
 CREATE TABLE transacciones (
     id SERIAL PRIMARY KEY,
@@ -44,6 +44,7 @@ CREATE TABLE transacciones (
 );
 
 # Grafana 
+http://localhost:3000/
 Postgre connection:
 host: postgres:5432
 db:transactions_db

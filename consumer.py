@@ -4,6 +4,17 @@ import mlflow
 import pandas as pd
 import json
 import psycopg2
+import subprocess
+import time
+from loguru import logger
+from threading import Thread
+
+# Bandera para controlar el estado del consumidor
+consuming = False
+consumer_thread = None
+
+# Configuración de loguru
+logger.add("logs/consumer.log", rotation="1 MB", retention="10 days", level="DEBUG") 
 
 ############# KAFKA CONSUMER #############
 # Configuración de Kafka
@@ -16,31 +27,40 @@ consumer = Consumer(kafka_conf)
 topic = 'fraud_transactions'
 consumer.subscribe([topic])
 
-#Consume mensaje
 # Consumir mensaje de Kafka
-def consume_msj():
-    try:
-        # Leer mensajes del tópico
-        msg = consumer.poll(timeout=5.0)
+def consume():
+    global consuming
+    logger.info("Esperando mensajes de Kafka...")
+    while consuming:
+        try:
+            msg = consumer.poll(timeout=1.0)
+            if msg is None:
+                continue
+            if msg.error():
+                logger.error(f"Error en Kafka: {msg.error()}")
+                continue
 
-        # Si no hay mensajes, retorna None
-        if msg is None:
-            print("consume_msj: No hay mensajes disponibles en Kafka.")
-            return None
+            transaction = msg.value().decode('utf-8')
+            logger.info(f"Mensaje recibido: {transaction}")
 
-        # Manejar errores en el mensaje
-        if msg.error():
-            print(f"consume_msj: Error en Kafka: {msg.error()}")
-            return None
+            prediction_result = get_prediction(transaction)
+            save_to_postgres(prediction_result)
 
-        # Procesar el mensaje recibido
-        print(f"consume_msj: Mensaje recibido: {msg.value().decode('utf-8')} del tópico {msg.topic()} en la partición {msg.partition()}")
-        return msg.value().decode('utf-8')
+            prediction = prediction_result.get("prediction", "N/A")
+            logger.success(f"Predicción obtenida: {prediction}")
 
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"consume_msj: Error al procesar: {str(e)}")
+        except Exception as e:
+            logger.error(f"Error procesando mensaje: {e}")
+            time.sleep(1)
+
+    consumer.close()
 
 ############# MLFLOW #############
+process = subprocess.Popen(
+    ["mlflow", "server", "--host", "127.0.0.1", "--port", "8080", "--backend-store-uri", "sqlite:///C:/Users/camil/OneDrive/Escritorio/Tesis/proyectos/main/mlflowfiles/mlflow.db", "--default-artifact-root", "file:///C:/Users/camil/OneDrive/Escritorio/Tesis/proyectos/main/mlflowfiles/artifacts"], 
+    stdout=subprocess.PIPE,  # Captura la salida estándar
+    stderr=subprocess.PIPE   # Captura errores
+)
 # Cargar el modelo de MLflow 
 def loadmodel():
     model = None
@@ -48,18 +68,21 @@ def loadmodel():
 
     try:
         model = mlflow.sklearn.load_model(model_path)
-        print("loadmodel: Modelo cargado correctamente desde MLflow.")
+        logger.success("loadmodel: Modelo cargado correctamente desde MLflow.")
     except Exception as e:
-        print(f"loadmodel: Error al cargar el modelo: {e}")
+        logger.error(f"loadmodel: Error al cargar el modelo: {e}")
         model = None
     return model
 
+# Cargar modelo
+model = loadmodel()
+
+# Función para realizar la predicción
 def get_prediction(msg):
-    model = loadmodel()
     try:
         # Convertir de JSON a diccionario
         data_dict = json.loads(msg)  
-        data_df = pd.DataFrame([data_dict])  # Crear DataFrame
+        data_df = pd.DataFrame([data_dict])  
 
         # Obtener las columnas que el modelo espera
         expected_features = model.feature_names_in_
@@ -77,10 +100,14 @@ def get_prediction(msg):
         }
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"get_prediction: Error al procesar el mensaje: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error al procesar el mensaje: {str(e)}")
 
 ############# POSTGRE SQL #############
-def insert_into_bd(result):
+# Funcion para guardar en PostgreSQL
+def save_to_postgres(result):
+    usuario_id = result.get("usuario_id", "N/A")
+    transaccion_id = result.get("transaccion_id", "N/A")
+    timestamp_generacion  = result.get("timestamp", "N/A")
     prediction_label = result.get("prediction", "N/A")
     category = result.get("Category", "N/A")
     transaction_amount = result.get("TransactionAmount", "N/A")
@@ -106,17 +133,16 @@ def insert_into_bd(result):
     # SQL para insertar datos
     sql = """
         INSERT INTO transacciones (
-            FraudIndicator, Category, TransactionAmount, AnomalyScore, Amount, 
+            usuario_id, transaccion_id, timestamp_generacion, FraudIndicator, Category, TransactionAmount, AnomalyScore, Amount, 
             AccountBalance, SuspiciousFlag, Hour, gap
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
-    valores = (prediction_label, category, transaction_amount, anomaly_score, amount, accountBalance, suspiciousFlag, hour, gap)
+    valores = (usuario_id, transaccion_id, timestamp_generacion, prediction_label, category, transaction_amount, anomaly_score, amount, accountBalance, suspiciousFlag, hour, gap)
 
     # Ejecutar la consulta
     cur.execute(sql, valores)
     conn.commit()
-
-    print("Registro insertado correctamente.")
+    logger.info("Registro insertado en la base de datos correctamente")
 
     # Cerrar conexión
     cur.close()
@@ -130,37 +156,26 @@ app = FastAPI()
 # Ruta principal
 @app.get("/")
 def read_root():
-    return {"message": "API de Inferencia con Kafka y MLflow"}
+    return {"message": "Bienvenido a la API de detección de fraudes"}
 
-# Función para consumir datos de Kafka y realizar predicciones
-@app.get("/consume")
-def consume():
-    print(f"consume: Consumiendo mensajes del tópico: {topic}")
-    message = consume_msj()
-    result = None
-    if message is not None:
-        print(f"consume: Consulta a MLFlow")
-        result = get_prediction(message)
-        insert_into_bd(result)
+# Función para iniciar el proceso de consumo de mensajes de Kafka y realizar predicciones
+@app.get("/start")
+def start_consumer():
+    global consuming, consumer_thread
+    if consuming:
+        return {"message": "El consumidor ya está en ejecución"}
 
-    prediction = result.get("prediction", "N/A")
-    return f"message: {prediction}"
+    consuming = True
+    consumer_thread = Thread(target=consume)
+    consumer_thread.start()
+    return {"message": "Consumidor iniciado"}
 
-# Función para probar la carga de modelo
-@app.get("/carga")
-def carga():
-    print(f"carga: Consumiendo mensajes del tópico: {topic}")
-    message = consume_msj()
+@app.get("/stop")
+def stop_consumer():
+    global consuming
+    if not consuming:
+        return {"message": "El consumidor no estaba en ejecución"}
 
-    print(f"carga: Carga modelo")
-    result = loadmodel()
-
-    return f"message: {message}"
-
-# Función para probar la base de datos
-@app.get("/bd")
-def bd():
-    print(f"bd: prueba bd")
-    message = insert_into_bd()
-
-    return f"message: {message}"
+    consuming = False
+    logger.info("Señal enviada para detener el consumidor")
+    return {"message": "Consumidor detenido"}

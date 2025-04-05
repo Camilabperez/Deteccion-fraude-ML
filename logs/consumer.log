@@ -1,0 +1,15 @@
+2025-04-05 15:40:30.110 | SUCCESS  | consumer:loadmodel:71 - loadmodel: Modelo cargado correctamente desde MLflow.
+2025-04-05 15:41:29.220 | INFO     | consumer:consume:33 - Esperando mensajes de Kafka...
+2025-04-05 15:41:29.220 | INFO     | consumer:start_consumer:171 - Consumidor iniciado
+2025-04-05 15:42:41.640 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 25.594335000830363, "AnomalyScore": 0.0002337072005655, "Amount": 75.96986252744823, "AccountBalance": 1056.301180517336, "SuspiciousFlag": 0.0, "Hour": 5.0, "gap": 20.0, "usuario_id": 1, "transaccion_id": "40bbc239-efa7-4936-958c-8eb5ee5cae7f", "timestamp": "2025-04-05T15:42:40.293782"}
+2025-04-05 15:42:41.961 | ERROR    | consumer:consume:53 - Error procesando mensaje: not all arguments converted during string formatting
+2025-04-05 15:42:42.964 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 2.0, "TransactionAmount": 52.05206965566357, "AnomalyScore": 0.2870829584147971, "Amount": 48.77860847209566, "AccountBalance": 4282.534760511673, "SuspiciousFlag": 0.0, "Hour": 23.0, "gap": 754.0, "usuario_id": 1, "transaccion_id": "2cce1ac2-b850-44c1-82b4-3b7177043599", "timestamp": "2025-04-05T15:42:40.295782"}
+2025-04-05 15:42:42.996 | ERROR    | consumer:consume:53 - Error procesando mensaje: not all arguments converted during string formatting
+2025-04-05 15:56:00.160 | SUCCESS  | consumer:loadmodel:71 - loadmodel: Modelo cargado correctamente desde MLflow.
+2025-04-05 15:56:00.214 | INFO     | consumer:consume:33 - Esperando mensajes de Kafka...
+2025-04-05 15:56:32.646 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 63.57394129489245, "AnomalyScore": 0.22185836581628512, "Amount": 95.09039772084446, "AccountBalance": 7963.742905383377, "SuspiciousFlag": 0.0, "Hour": 16.0, "gap": 6.0, "usuario_id": 1, "transaccion_id": "ef70d648-dd88-4d6a-a399-4ea12f7d0c3f", "timestamp": "2025-04-05T15:56:32.503843"}
+2025-04-05 15:56:32.952 | SUCCESS  | consumer:save_to_postgres:145 - Registro insertado correctamente.
+2025-04-05 15:56:32.954 | INFO     | consumer:consume:50 - Predicción: no fraudulento
+2025-04-05 15:56:32.955 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 2.0, "TransactionAmount": 54.454844994657954, "AnomalyScore": 0.5262450456114619, "Amount": 40.9964021959206, "AccountBalance": 3522.682995978279, "SuspiciousFlag": 0.0, "Hour": 15.0, "gap": 639.0, "usuario_id": 1, "transaccion_id": "ed787615-6640-4039-a76d-0db009b17f8a", "timestamp": "2025-04-05T15:56:32.503843"}
+2025-04-05 15:56:33.068 | SUCCESS  | consumer:save_to_postgres:145 - Registro insertado correctamente.
+2025-04-05 15:56:33.083 | INFO     | consumer:consume:50 - Predicción: no fraudulento

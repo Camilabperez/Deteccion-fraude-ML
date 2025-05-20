@@ -1,0 +1,15 @@
+artifact_uri: file:///c:/Users/camil/OneDrive/Escritorio/Tesis/proyectos/main/mlruns/307746205249028002/2a9a021e95f044f79f316f0583b7f759/artifacts
+end_time: 1745726908259
+entry_point_name: ''
+experiment_id: '307746205249028002'
+lifecycle_stage: active
+run_id: 2a9a021e95f044f79f316f0583b7f759
+run_name: incongruous-swan-351
+run_uuid: 2a9a021e95f044f79f316f0583b7f759
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1745726897036
+status: 3
+tags: []
+user_id: Cami

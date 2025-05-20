@@ -1,0 +1,15 @@
+artifact_uri: file:///c:/Users/camil/OneDrive/Escritorio/Tesis/proyectos/main/mlruns/307746205249028002/e9b6b84d0f484459b78fec3451399541/artifacts
+end_time: 1745726917969
+entry_point_name: ''
+experiment_id: '307746205249028002'
+lifecycle_stage: active
+run_id: e9b6b84d0f484459b78fec3451399541
+run_name: clean-duck-368
+run_uuid: e9b6b84d0f484459b78fec3451399541
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1745726911418
+status: 3
+tags: []
+user_id: Cami

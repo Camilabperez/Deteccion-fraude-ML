@@ -56,11 +56,23 @@ def consume():
     consumer.close()
 
 ############# MLFLOW #############
-process = subprocess.Popen(
-    ["mlflow", "server", "--host", "127.0.0.1", "--port", "8080", "--backend-store-uri", "sqlite:///C:/Users/camil/OneDrive/Escritorio/Tesis/proyectos/main/mlflowfiles/mlflow.db", "--default-artifact-root", "file:///C:/Users/camil/OneDrive/Escritorio/Tesis/proyectos/main/mlflowfiles/artifacts"], 
-    stdout=subprocess.PIPE,  # Captura la salida estándar
-    stderr=subprocess.PIPE   # Captura errores
-)
+mlflow_process = None
+
+def start_mlflow():
+    global mlflow_process
+    mlflow_process = subprocess.Popen(
+        ["mlflow", "server", "--host", "127.0.0.1", "--port", "8080", "--backend-store-uri", "sqlite:///C:/Users/camil/OneDrive/Escritorio/Tesis/proyectos/main/mlflowfiles/mlflow.db", "--default-artifact-root", "file:///C:/Users/camil/OneDrive/Escritorio/Tesis/proyectos/main/mlflowfiles/artifacts"], 
+        stdout=subprocess.PIPE,  # Captura la salida estándar
+        stderr=subprocess.PIPE   # Captura errores
+    )
+
+def stop_mlflow():
+    global mlflow_process
+    if mlflow_process:
+        mlflow_process.terminate() 
+        mlflow_process.wait()
+        logger.info("MLflow detenido")
+
 # Cargar el modelo de MLflow 
 def loadmodel():
     model = None
@@ -107,7 +119,6 @@ def get_prediction(msg):
 def save_to_postgres(result):
     usuario_id = result.get("usuario_id", "N/A")
     transaccion_id = result.get("transaccion_id", "N/A")
-    timestamp_generacion  = result.get("timestamp", "N/A")
     prediction_label = result.get("prediction", "N/A")
     category = result.get("Category", "N/A")
     transaction_amount = result.get("TransactionAmount", "N/A")
@@ -133,11 +144,11 @@ def save_to_postgres(result):
     # SQL para insertar datos
     sql = """
         INSERT INTO transacciones (
-            usuario_id, transaccion_id, timestamp_generacion, FraudIndicator, Category, TransactionAmount, AnomalyScore, Amount, 
+            usuario_id, transaccion_id, FraudIndicator, Category, TransactionAmount, AnomalyScore, Amount, 
             AccountBalance, SuspiciousFlag, Hour, gap
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
-    valores = (usuario_id, transaccion_id, timestamp_generacion, prediction_label, category, transaction_amount, anomaly_score, amount, accountBalance, suspiciousFlag, hour, gap)
+    valores = (usuario_id, transaccion_id, prediction_label, category, transaction_amount, anomaly_score, amount, accountBalance, suspiciousFlag, hour, gap)
 
     # Ejecutar la consulta
     cur.execute(sql, valores)
@@ -165,6 +176,10 @@ def start_consumer():
     if consuming:
         return {"message": "El consumidor ya está en ejecución"}
 
+    # Iniciar el servidor de MLflow
+    start_mlflow()
+
+    # Iniciar el proceso de consumo
     consuming = True
     consumer_thread = Thread(target=consume)
     consumer_thread.start()
@@ -176,6 +191,10 @@ def stop_consumer():
     if not consuming:
         return {"message": "El consumidor no estaba en ejecución"}
 
+    # Detener el servidor de MLflow
+    stop_mlflow()
+
+    # Detener el proceso de consumo
     consuming = False
-    logger.info("Señal enviada para detener el consumidor")
+    logger.info("Deteniendo el consumidor")
     return {"message": "Consumidor detenido"}

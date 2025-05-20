@@ -1,0 +1,15 @@
+artifact_uri: file:///c:/Users/camil/OneDrive/Escritorio/Tesis/proyectos/main/mlruns/307746205249028002/004061ac328f43b5852d1bf5bba1c213/artifacts
+end_time: 1746016532721
+entry_point_name: ''
+experiment_id: '307746205249028002'
+lifecycle_stage: active
+run_id: 004061ac328f43b5852d1bf5bba1c213
+run_name: stately-lamb-623
+run_uuid: 004061ac328f43b5852d1bf5bba1c213
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1746016524362
+status: 3
+tags: []
+user_id: Cami

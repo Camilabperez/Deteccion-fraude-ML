@@ -1,36 +1,76 @@
-1. Iniciar docker desktop
+# Configuración inicial
+Antes de comenzar, es necesario 
+1. Tener python, docker, 
+1. Instalar las dependencias del entorno:
+pip install mlflow numpy pandas matplotlib seaborn ipykernel notebook loguru confluent_kafka sdv
 
-2. Ejecutar contenedor:
+
+# Ejecución del Proyecto
+1. Asegurate de tener Docker Desktop corriendo antes de continuar.
+
+2. Levantar los contenedores. Ejecutá el siguiente comando para iniciar los servicios definidos en docker-compose.yml:
+```bash
 docker-compose up -d
-- checkear con docker ps si kafka inicio
+```
+Verificá que los contenedores estén activos con:
 
-4. Publicar API: 
+```bash
+docker ps
+```
+Asegurate de que Kafka y Zookeeper estén en funcionamiento.
+
+3. Iniciar la API con Uvicorn
+Desde la raíz del proyecto, ejecutá el siguiente comando:
+
+```bash
 python -m uvicorn consumer:app --reload
+```
 
-5. Enviar mensaje del producer:
+Esto levanta el servidor FastAPI que consume mensajes de Kafka y ejecuta predicciones.
+
+4. Enviar mensajes con el productor
+En otra terminal, ejecutá:
+
+```bash
 python producer.py
+```
 
-6. Para usar la API, en powershell:  
-curl.exe -X 'GET' 'http://127.0.0.1:8000/consume_continuously' -H 'accept: application/json'
+Esto simula el envío de transacciones para su análisis.
 
-# 
+5. Activar el consumidor desde la API
+Podés iniciar el proceso de consumo accediendo al endpoint /start:
+
+```bash
+curl.exe -X 'GET' 'http://127.0.0.1:8000/start' -H 'accept: application/json'
+```
+
+Esto iniciará el hilo consumidor que escucha el topic de Kafka y evalúa las transacciones entrantes.
 
 
 # Postgres
-Para iniciar desde terminal:
+La base de datos utilizada para almacenar las transacciones se implementa mediante un contenedor Docker que ejecuta PostgreSQL. A continuación se detallan las configuraciones clave y los comandos para su acceso
+
+##  Acceso desde Terminal
+Para acceder al contenedor y utilizar psql para consultas directas, ejecutar:
 docker exec -it postgres bash
 psql -U user -d transactions_db
 
+## Parametros de conexion:
 Server: localhost
 Port: 5432
 POSTGRES_USER: user
 POSTGRES_PASSWORD: password
 POSTGRES_DB: transactions_db
 
-Con "q" salgo del select
+Para salir del modo de selección interactiva en psql, presionar la tecla q.
+
+## Esquema de la tabla
+La base de datos contiene la siguiente tabla principal para registrar transacciones
 
 CREATE TABLE transacciones (
     id SERIAL PRIMARY KEY,
+    usuario_id INT,
+    transaccion_id VARCHAR(50),
     FraudIndicator VARCHAR(50), 
     Category INT,      
     TransactionAmount DECIMAL(10,2), 
@@ -43,52 +83,47 @@ CREATE TABLE transacciones (
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
 );
 
-# Grafana 
-http://localhost:3000/
-Postgre connection:
-host: postgres:5432
-db:transactions_db
-username:grafanareader
-password: admin
-tsl mode: diabled
+# Visualización con Grafana
+Grafana permite conectarse a la base de datos PostgreSQL para visualizar las métricas de las transacciones en tiempo real.
+
+URL de acceso: http://localhost:3000/
+
+Configuración de la conexión a PostgreSQL en Grafana
+- host: postgres:5432
+- db:transactions_db
+- username: admin / grafanareader
+- password: admin
+- tsl mode: disabled
 
 
-# Fraud Detection Dataset
+# Conjunto de Datos de Detección de Fraude
+El conjunto de datos de detección de fraude financiero contiene información relacionada con transacciones financieras y patrones fraudulentos. Está diseñado para el entrenamiento y evaluación de modelos de aprendizaje automático orientados a la detección de fraudes.
 
-🔒 Dataset Description
-The Financial Fraud Detection Dataset contains data related to financial transactions and fraudulent patterns. It is designed for the purpose of training and evaluating machine learning models for fraud detection.
+## Estructura del Conjunto de Datos
+El conjunto de datos se encuentra organizado en la carpeta `data`, que contiene subcarpetas con archivos CSV que incluyen información específica sobre transacciones financieras, perfiles de clientes, patrones fraudulentos, montos de transacciones e información de los comerciantes. La estructura es la siguiente:
 
-📁 Dataset Structure
-The dataset is organized within the "data" folder and consists of several subfolders, each containing CSV files with specific information related to financial transactions, customer profiles, fraudulent patterns, transaction amounts, and merchant information. The dataset structure is as follows:
 
-- 📂 data
-  - 📂 Transaction Data
+
+- data
+  - Transaction Data
     - transaction_records.csv: Contains transaction records with details such as transaction ID, date, amount, and customer ID.
     - transaction_metadata.csv: Contains additional metadata for each transaction.
 
-  - 📂 Customer Profiles
+  - Customer Profiles
     - customer_data.csv: Includes customer profiles with information such as name, age, address, and contact details.
     - account_activity.csv: Provides details of customer account activity, including account balance, transaction history, and account status.
 
-  - 📂 Fraudulent Patterns
+  - Fraudulent Patterns
     - fraud_indicators.csv: Contains indicators of fraudulent patterns and suspicious activities.
     - suspicious_activity.csv: Provides specific details of transactions flagged as suspicious.
 
-  - 📂 Transaction Amounts
+  - Transaction Amounts
     - amount_data.csv: Includes transaction amounts for each transaction.
     - anomaly_scores.csv: Provides anomaly scores for transaction amounts, indicating potential fraudulence.
 
-  - 📂 Merchant Information
+  - Merchant Information
     - merchant_data.csv: Contains information about merchants involved in transactions.
     - transaction_category_labels.csv: Provides category labels for different transaction types.
 
-📂 src
+src
 - data.py: Python file containing code to generate the dataset based on real-world data.
-
-💡 Usage
-This dataset can be used for various purposes, including:
-
-- Developing and evaluating machine learning models for financial fraud detection.
-- Conducting research on fraud detection algorithms and techniques.
-- Training data analysts and data scientists on fraud detection methodologies.
-

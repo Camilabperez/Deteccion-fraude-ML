@@ -1,0 +1,6 @@
+artifact_location: file:///c:/Users/camil/OneDrive/Escritorio/Tesis/proyectos/main/mlruns/582697891182158306
+creation_time: 1745726927652
+experiment_id: '582697891182158306'
+last_update_time: 1745726927652
+lifecycle_stage: active
+name: XGBoost_GridSearch

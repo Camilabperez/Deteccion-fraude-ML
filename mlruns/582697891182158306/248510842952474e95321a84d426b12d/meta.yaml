@@ -1,0 +1,15 @@
+artifact_uri: file:///c:/Users/camil/OneDrive/Escritorio/Tesis/proyectos/main/mlruns/582697891182158306/248510842952474e95321a84d426b12d/artifacts
+end_time: 1746016568035
+entry_point_name: ''
+experiment_id: '582697891182158306'
+lifecycle_stage: active
+run_id: 248510842952474e95321a84d426b12d
+run_name: spiffy-grouse-949
+run_uuid: 248510842952474e95321a84d426b12d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1746016546071
+status: 3
+tags: []
+user_id: Cami

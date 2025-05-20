@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1745792314588
+current_stage: None
+description: null
+last_updated_timestamp: 1745792314588
+name: logistic-regression-withSampleData-experiment
+run_id: 6fd19f7b4cb240ad9a340928b03d6f29
+run_link: null
+source: file:///c:/Users/camil/OneDrive/Escritorio/Tesis/proyectos/main/mlruns/307746205249028002/6fd19f7b4cb240ad9a340928b03d6f29/artifacts/logistic_regression_model_withSampleData
+status: READY
+status_message: null
+storage_location: file:///c:/Users/camil/OneDrive/Escritorio/Tesis/proyectos/main/mlruns/307746205249028002/6fd19f7b4cb240ad9a340928b03d6f29/artifacts/logistic_regression_model_withSampleData
+user_id: null
+version: 2

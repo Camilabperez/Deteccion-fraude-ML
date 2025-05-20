@@ -13,3 +13,125 @@
 2025-04-05 15:56:32.955 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 2.0, "TransactionAmount": 54.454844994657954, "AnomalyScore": 0.5262450456114619, "Amount": 40.9964021959206, "AccountBalance": 3522.682995978279, "SuspiciousFlag": 0.0, "Hour": 15.0, "gap": 639.0, "usuario_id": 1, "transaccion_id": "ed787615-6640-4039-a76d-0db009b17f8a", "timestamp": "2025-04-05T15:56:32.503843"}
 2025-04-05 15:56:33.068 | SUCCESS  | consumer:save_to_postgres:145 - Registro insertado correctamente.
 2025-04-05 15:56:33.083 | INFO     | consumer:consume:50 - Predicción: no fraudulento
+2025-04-18 13:39:28.602 | SUCCESS  | consumer:loadmodel:83 - loadmodel: Modelo cargado correctamente desde MLflow.
+2025-04-18 15:40:00.620 | SUCCESS  | consumer:loadmodel:83 - loadmodel: Modelo cargado correctamente desde MLflow.
+2025-04-18 15:40:04.493 | SUCCESS  | consumer:loadmodel:83 - loadmodel: Modelo cargado correctamente desde MLflow.
+2025-04-18 15:49:02.866 | INFO     | consumer:consume:33 - Esperando mensajes de Kafka...
+2025-04-18 15:49:02.870 | ERROR    | consumer:consume:40 - Error en Kafka: KafkaError{code=UNKNOWN_TOPIC_OR_PART,val=3,str="Subscribed topic not available: fraud_transactions: Broker: Unknown topic or partition"}
+2025-04-18 15:49:03.094 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 44.47424391893842, "AnomalyScore": 0.0002337072005655, "Amount": 93.87444472865064, "AccountBalance": 8852.869975141417, "SuspiciousFlag": 0.0, "Hour": 0.0, "gap": 168.0, "usuario_id": 1, "transaccion_id": "472dbb8b-86df-47e7-abe1-230305534033"}
+2025-04-18 15:49:03.281 | ERROR    | consumer:consume:53 - Error procesando mensaje: tuple index out of range
+2025-04-18 15:49:04.283 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 2.0, "TransactionAmount": 10.057863646142923, "AnomalyScore": 0.5995718302864746, "Amount": 57.57480240584699, "AccountBalance": 8027.02191561744, "SuspiciousFlag": 0.0, "Hour": 0.0, "gap": 649.0, "usuario_id": 1, "transaccion_id": "6726d968-7e73-45a9-99f9-0207b2affbed"}
+2025-04-18 15:49:04.402 | ERROR    | consumer:consume:53 - Error procesando mensaje: tuple index out of range
+2025-04-18 15:51:05.755 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 89.110061487514, "AnomalyScore": 0.0002337072005655, "Amount": 18.63084558402402, "AccountBalance": 7972.904482684721, "SuspiciousFlag": 0.0, "Hour": 0.0, "gap": 786.0, "usuario_id": 1, "transaccion_id": "6138cb49-0e50-4d50-af26-79368deaa460"}
+2025-04-18 15:51:06.508 | ERROR    | consumer:consume:53 - Error procesando mensaje: tuple index out of range
+2025-04-18 15:51:07.511 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 3.0, "TransactionAmount": 86.01106445003587, "AnomalyScore": 0.039316310531731236, "Amount": 66.2128654483657, "AccountBalance": 3478.5059973797966, "SuspiciousFlag": 0.0, "Hour": 0.0, "gap": 497.0, "usuario_id": 1, "transaccion_id": "a9001f91-1075-4830-b155-a117e9f23dad"}
+2025-04-18 15:51:07.625 | ERROR    | consumer:consume:53 - Error procesando mensaje: tuple index out of range
+2025-04-18 15:53:33.456 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 85.03842361640633, "AnomalyScore": 0.0002337072005655, "Amount": 24.331355132856057, "AccountBalance": 9999.776238940984, "SuspiciousFlag": 0.0, "Hour": 8.0, "gap": 287.0, "usuario_id": 1, "transaccion_id": "4bf87ef4-6060-4ca8-8e02-796a26b9094f"}
+2025-04-18 15:53:34.067 | ERROR    | consumer:consume:53 - Error procesando mensaje: tuple index out of range
+2025-04-18 15:53:35.068 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 3.0, "TransactionAmount": 81.35360584402885, "AnomalyScore": 0.9155880403452186, "Amount": 53.79564076492794, "AccountBalance": 3875.477963437291, "SuspiciousFlag": 0.0, "Hour": 8.0, "gap": 303.0, "usuario_id": 1, "transaccion_id": "2161a0cf-173e-4174-b3a5-59eff1d6d4c5"}
+2025-04-18 15:53:35.196 | ERROR    | consumer:consume:53 - Error procesando mensaje: tuple index out of range
+2025-04-18 15:57:33.157 | SUCCESS  | consumer:loadmodel:83 - loadmodel: Modelo cargado correctamente desde MLflow.
+2025-04-18 15:57:39.542 | INFO     | consumer:consume:33 - Esperando mensajes de Kafka...
+2025-04-18 15:58:06.942 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 30.420568615412652, "AnomalyScore": 0.0002337072005655, "Amount": 10.006932562275091, "AccountBalance": 3287.9627954201114, "SuspiciousFlag": 0.0, "Hour": 5.0, "gap": 128.0, "usuario_id": 1, "transaccion_id": "ce3ab0b6-e079-41d9-9904-70056bce559b"}
+2025-04-18 15:58:08.335 | ERROR    | consumer:consume:53 - Error procesando mensaje: invalid input syntax for type integer: "ce3ab0b6-e079-41d9-9904-70056bce559b"
+LINE 5:         ) VALUES (1, 'ce3ab0b6-e079-41d9-9904-70056bce559b',...
+                             ^
+
+2025-04-18 15:58:09.338 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 3.0, "TransactionAmount": 85.62192537711657, "AnomalyScore": 0.5053782114475396, "Amount": 52.151478961029476, "AccountBalance": 3311.95551833079, "SuspiciousFlag": 0.0, "Hour": 12.0, "gap": 193.0, "usuario_id": 1, "transaccion_id": "9ea78633-5acd-4bb4-ba46-3048a1ea549c"}
+2025-04-18 15:58:09.436 | ERROR    | consumer:consume:53 - Error procesando mensaje: invalid input syntax for type integer: "9ea78633-5acd-4bb4-ba46-3048a1ea549c"
+LINE 5:         ) VALUES (1, '9ea78633-5acd-4bb4-ba46-3048a1ea549c',...
+                             ^
+
+2025-04-18 16:02:27.277 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 57.95659521801983, "AnomalyScore": 0.017979752177252256, "Amount": 94.31229595353236, "AccountBalance": 2652.0803961836405, "SuspiciousFlag": 0.0, "Hour": 12.0, "gap": 1.0, "usuario_id": 1, "transaccion_id": "d63c82c8-e39c-4378-b185-a5ac9c2153e1"}
+2025-04-18 16:02:27.952 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 16:02:27.955 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 16:02:27.970 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 3.0, "TransactionAmount": 67.25475940405983, "AnomalyScore": 0.5872923922379714, "Amount": 33.60301519734985, "AccountBalance": 2833.31282275484, "SuspiciousFlag": 0.0, "Hour": 0.0, "gap": 950.0, "usuario_id": 1, "transaccion_id": "53e6f963-25cb-42ea-a586-8d4c7026e3a1"}
+2025-04-18 16:02:28.277 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 16:02:28.277 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 16:03:50.626 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 30.550570033973667, "AnomalyScore": 0.139992520240164, "Amount": 73.84752987852012, "AccountBalance": 9999.776238940984, "SuspiciousFlag": 0.0, "Hour": 1.0, "gap": 45.0, "usuario_id": 1, "transaccion_id": "fbf74a26-c57e-4dee-8fbc-94fef88a16bc"}
+2025-04-18 16:03:51.521 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 16:03:51.522 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 16:03:51.525 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 2.0, "TransactionAmount": 48.33629818559939, "AnomalyScore": 0.3551775591406207, "Amount": 71.7259312651787, "AccountBalance": 6637.8752538237295, "SuspiciousFlag": 0.0, "Hour": 6.0, "gap": 19.0, "usuario_id": 1, "transaccion_id": "f6b514eb-8807-4776-ac75-1ce281a2ce8c"}
+2025-04-18 16:03:51.624 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 16:03:51.625 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 16:03:51.626 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 10.311461108263764, "AnomalyScore": 0.6626833942524609, "Amount": 20.569546652094207, "AccountBalance": 4099.026524215239, "SuspiciousFlag": 0.0, "Hour": 3.0, "gap": 1.0, "usuario_id": 1, "transaccion_id": "adb884b0-abde-48fc-bd5a-4cd705effc02"}
+2025-04-18 16:03:51.723 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 16:03:51.723 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 16:03:51.723 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 86.97724187218024, "AnomalyScore": 0.2746096866772265, "Amount": 54.96416457123542, "AccountBalance": 9999.776238940984, "SuspiciousFlag": 0.0, "Hour": 21.0, "gap": 107.0, "usuario_id": 1, "transaccion_id": "1af89efa-cc6b-4a99-978d-bf72c3f14656"}
+2025-04-18 16:03:51.822 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 16:03:51.824 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 16:03:51.824 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 23.354905921764086, "AnomalyScore": 0.06173383693480183, "Amount": 70.9711067077103, "AccountBalance": 6378.298983411347, "SuspiciousFlag": 0.0, "Hour": 23.0, "gap": 86.0, "usuario_id": 1, "transaccion_id": "fa8829b7-2bb3-458b-a11f-209fa94fcb17"}
+2025-04-18 16:03:51.924 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 16:03:51.925 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 17:21:51.666 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 41.008573314619625, "AnomalyScore": 0.9990473412377048, "Amount": 10.006932562275091, "AccountBalance": 2637.49006800035, "SuspiciousFlag": 0.0, "Hour": 4.0, "gap": 80.0, "usuario_id": 1, "transaccion_id": "96559703-04f3-4ba1-bd9a-372e703df3ba"}
+2025-04-18 17:21:52.674 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 17:21:52.675 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 17:21:52.675 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 3.0, "TransactionAmount": 23.63731389588856, "AnomalyScore": 0.7842764740069222, "Amount": 45.28300453349341, "AccountBalance": 5125.2066492494705, "SuspiciousFlag": 0.0, "Hour": 2.0, "gap": 283.0, "usuario_id": 1, "transaccion_id": "27ee0c0e-c29f-412c-a7bf-9413e15a0ff5"}
+2025-04-18 17:21:52.775 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 17:21:52.778 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 17:21:52.780 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 3.0, "TransactionAmount": 10.057863646142923, "AnomalyScore": 0.8175755863750656, "Amount": 10.006932562275091, "AccountBalance": 1056.301180517336, "SuspiciousFlag": 0.0, "Hour": 2.0, "gap": 333.0, "usuario_id": 1, "transaccion_id": "8444d401-f0f9-46be-8a1a-bfe48bc59398"}
+2025-04-18 17:21:52.888 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 17:21:52.888 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 17:21:52.888 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 10.057863646142923, "AnomalyScore": 0.9107256044145091, "Amount": 10.006932562275091, "AccountBalance": 9999.776238940984, "SuspiciousFlag": 0.0, "Hour": 5.0, "gap": 96.0, "usuario_id": 1, "transaccion_id": "b3e89ac4-0b3e-4cf1-a5c1-3fbd8453f9fa"}
+2025-04-18 17:21:52.987 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 17:21:52.989 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 17:21:52.991 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 11.18075946123605, "AnomalyScore": 0.6299828474188506, "Amount": 24.751061973063685, "AccountBalance": 9700.062285030379, "SuspiciousFlag": 0.0, "Hour": 6.0, "gap": 1.0, "usuario_id": 1, "transaccion_id": "69b88f43-097b-423e-8ff7-b2e730570532"}
+2025-04-18 17:21:53.095 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 17:21:53.096 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 17:21:53.098 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 16.984501116102656, "AnomalyScore": 0.867457994509252, "Amount": 11.810668624334442, "AccountBalance": 5099.35531226999, "SuspiciousFlag": 0.0, "Hour": 0.0, "gap": 182.0, "usuario_id": 1, "transaccion_id": "14e40ca2-4cab-48bc-9694-2ac6f96f65d4"}
+2025-04-18 17:21:53.198 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 17:21:53.199 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 17:21:53.200 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 10.057863646142923, "AnomalyScore": 0.4532969929648679, "Amount": 18.136859645663012, "AccountBalance": 4434.949769493579, "SuspiciousFlag": 0.0, "Hour": 0.0, "gap": 371.0, "usuario_id": 1, "transaccion_id": "9f67f2b2-c898-49a8-9d9b-76af660dd641"}
+2025-04-18 17:21:53.301 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 17:21:53.302 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 17:21:53.303 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 39.32590324093623, "AnomalyScore": 0.34012386312431253, "Amount": 21.58216126577521, "AccountBalance": 7194.69294938461, "SuspiciousFlag": 0.0, "Hour": 22.0, "gap": 1.0, "usuario_id": 1, "transaccion_id": "0164e2c6-5d2e-4f9e-8fae-d7e4b76eafeb"}
+2025-04-18 17:21:53.409 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 17:21:53.410 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 17:46:46.513 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 24.75808107524927, "AnomalyScore": 0.9990473412377048, "Amount": 80.08446014377114, "AccountBalance": 8673.247828206368, "SuspiciousFlag": 0.0, "Hour": 8.0, "gap": 189.0, "usuario_id": 1, "transaccion_id": "9c414801-5f06-44d0-b24c-a43d79a0326c"}
+2025-04-18 17:46:47.214 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 17:46:47.214 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 17:46:47.214 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 2.0, "TransactionAmount": 53.51238613434794, "AnomalyScore": 0.5804092110316839, "Amount": 29.010648436888033, "AccountBalance": 4704.840343395478, "SuspiciousFlag": 0.0, "Hour": 23.0, "gap": 836.0, "usuario_id": 1, "transaccion_id": "a9c35d73-d3a7-47eb-abc3-9135b8319c8f"}
+2025-04-18 17:46:47.507 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 17:46:47.519 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 17:46:47.523 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 3.0, "TransactionAmount": 46.52439593326907, "AnomalyScore": 0.8055457309930469, "Amount": 36.42930075728722, "AccountBalance": 3980.191109198468, "SuspiciousFlag": 0.0, "Hour": 10.0, "gap": 190.0, "usuario_id": 1, "transaccion_id": "c2449dea-0ab8-4977-a4c4-0bea9cf577d4"}
+2025-04-18 17:46:47.670 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 17:46:47.671 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 17:46:47.672 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 82.50065877556241, "AnomalyScore": 0.9874028730347923, "Amount": 10.580710005675215, "AccountBalance": 7208.57994271018, "SuspiciousFlag": 0.0, "Hour": 10.0, "gap": 89.0, "usuario_id": 1, "transaccion_id": "4d5290d4-17f5-48d9-823e-fb9e2faf0803"}
+2025-04-18 17:46:47.770 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 17:46:47.771 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 17:46:47.772 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 80.39935028235371, "AnomalyScore": 0.7462921543843709, "Amount": 87.37395134200352, "AccountBalance": 7714.962903483942, "SuspiciousFlag": 0.0, "Hour": 23.0, "gap": 34.0, "usuario_id": 1, "transaccion_id": "3ee1605c-0549-4d20-93f1-1e9f4f7ec219"}
+2025-04-18 17:46:47.868 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 17:46:47.869 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 17:46:47.871 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 64.93731424431607, "AnomalyScore": 0.9990473412377048, "Amount": 10.006932562275091, "AccountBalance": 8539.115343771746, "SuspiciousFlag": 0.0, "Hour": 18.0, "gap": 799.0, "usuario_id": 1, "transaccion_id": "e37cecd8-f833-4e5f-87b6-6d33d9b34335"}
+2025-04-18 17:46:47.966 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 17:46:47.967 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 17:46:47.968 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 30.617083033814307, "AnomalyScore": 0.2536206097566749, "Amount": 10.006932562275091, "AccountBalance": 3148.515048645545, "SuspiciousFlag": 0.0, "Hour": 18.0, "gap": 82.0, "usuario_id": 1, "transaccion_id": "5a1b5299-c610-44ef-8045-708238157c40"}
+2025-04-18 17:46:48.072 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 17:46:48.073 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 17:46:48.074 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 25.106776996579903, "AnomalyScore": 0.09777804649636884, "Amount": 10.006932562275091, "AccountBalance": 9618.34632402731, "SuspiciousFlag": 0.0, "Hour": 23.0, "gap": 70.0, "usuario_id": 1, "transaccion_id": "fdcc26c4-0da3-4937-bd47-c943317cc282"}
+2025-04-18 17:46:48.175 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 17:46:48.175 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 18:05:15.327 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 29.696414126330215, "AnomalyScore": 0.19515018703059775, "Amount": 98.04988620015138, "AccountBalance": 9999.776238940984, "SuspiciousFlag": 0.0, "Hour": 0.0, "gap": 391.0, "usuario_id": 1, "transaccion_id": "51ac0439-05ab-4026-824b-b04e6d561ae8"}
+2025-04-18 18:05:15.986 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 18:05:15.987 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 18:05:15.988 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 3.0, "TransactionAmount": 58.072405015891746, "AnomalyScore": 0.9990473412377048, "Amount": 83.79585001702601, "AccountBalance": 7836.068627228384, "SuspiciousFlag": 0.0, "Hour": 6.0, "gap": 265.0, "usuario_id": 1, "transaccion_id": "2537c37c-31dd-4e73-920f-a7bf7227d4d1"}
+2025-04-18 18:05:16.252 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 18:05:16.252 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 18:05:16.252 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 3.0, "TransactionAmount": 31.08621834431987, "AnomalyScore": 0.02769664544253829, "Amount": 10.006932562275091, "AccountBalance": 3492.3916498581084, "SuspiciousFlag": 0.0, "Hour": 0.0, "gap": 227.0, "usuario_id": 1, "transaccion_id": "b5c68947-b55a-4a01-a79e-fb80af4a199a"}
+2025-04-18 18:05:16.389 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 18:05:16.390 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 18:05:16.392 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 84.59889953015538, "AnomalyScore": 0.9990473412377048, "Amount": 50.23404414138603, "AccountBalance": 9941.195824325785, "SuspiciousFlag": 0.0, "Hour": 3.0, "gap": 302.0, "usuario_id": 1, "transaccion_id": "d5a563cc-f7c6-4751-9837-19f8230c74df"}
+2025-04-18 18:05:16.481 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 18:05:16.483 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 18:05:16.484 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 21.933923088699213, "AnomalyScore": 0.0002337072005655, "Amount": 43.98677746289959, "AccountBalance": 6651.380429081409, "SuspiciousFlag": 0.0, "Hour": 0.0, "gap": 73.0, "usuario_id": 1, "transaccion_id": "7382d464-2a3e-4927-a635-b97b519c775a"}
+2025-04-18 18:05:16.581 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 18:05:16.581 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 18:05:16.583 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 39.29242918676882, "AnomalyScore": 0.2422335046389866, "Amount": 10.006932562275091, "AccountBalance": 9393.600905819781, "SuspiciousFlag": 0.0, "Hour": 19.0, "gap": 87.0, "usuario_id": 1, "transaccion_id": "e667da69-8da5-4999-bc0b-52e39c7cf228"}
+2025-04-18 18:05:16.676 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 18:05:16.677 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 18:05:16.679 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 99.78432334104625, "AnomalyScore": 0.32290168590598545, "Amount": 93.78026592449228, "AccountBalance": 8473.07456885314, "SuspiciousFlag": 0.0, "Hour": 2.0, "gap": 86.0, "usuario_id": 1, "transaccion_id": "e549d4b7-f089-48ba-8a3c-a3573fd3f085"}
+2025-04-18 18:05:16.755 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 18:05:16.755 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento
+2025-04-18 18:05:16.757 | INFO     | consumer:consume:44 - Mensaje recibido: {"Category": 1.0, "TransactionAmount": 50.07053388316087, "AnomalyScore": 0.10303931091001847, "Amount": 44.73485612648865, "AccountBalance": 9949.583433941703, "SuspiciousFlag": 0.0, "Hour": 22.0, "gap": 387.0, "usuario_id": 1, "transaccion_id": "555027c3-312e-456d-836d-dc0c3b56c6e7"}
+2025-04-18 18:05:16.837 | INFO     | consumer:save_to_postgres:156 - Registro insertado en la base de datos correctamente
+2025-04-18 18:05:16.837 | SUCCESS  | consumer:consume:50 - Predicción obtenida: no fraudulento

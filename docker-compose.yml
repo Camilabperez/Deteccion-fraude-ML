@@ -9,6 +9,8 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    volumes:
+    - ./services/zookeeper:/var/lib/zookeeper
 
   kafka:
     image: confluentinc/cp-kafka:7.5.0
@@ -22,6 +24,8 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     depends_on:
       - zookeeper
+    volumes:
+    - ./services/kafka:/var/lib/kafka
   
   postgres:
     image: postgres:15
@@ -33,6 +37,8 @@ services:
     ports:
       - "5432:5432"
     restart: always
+    volumes:
+    - ./services/postgres:/var/lib/postgresql/data
 
   grafana:
     image: grafana/grafana:latest
@@ -45,7 +51,6 @@ services:
     depends_on:
       - postgres
     volumes:
-      - grafana_data:/var/lib/grafana  # Persistencia de datos
-
-volumes:
-  grafana_data:
+      - ./services/grafana:/var/lib/grafana # Persistencia de datos
+      - ./services/grafana/conf/grafana.ini:/etc/grafana/grafana.ini:rw 
+      

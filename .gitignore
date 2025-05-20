@@ -3,4 +3,9 @@ viejo/__pycache__
 viejo
 __pycache__/
 **/__pycache__/
+.venv
+Scripts
+Lib
+share/
+get-pip.py
 # Permitir los directorios importantes !0/

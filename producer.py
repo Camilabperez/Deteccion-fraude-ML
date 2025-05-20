@@ -49,7 +49,7 @@ ctgan = CTGANSynthesizer(metadata,
 ctgan.fit(X)
 
 # Generar datos sintéticos
-synthetic_data = ctgan.sample(num_rows=2)
+synthetic_data = ctgan.sample(num_rows=8)
 
 # Enviar datos a Kafka
 for _, row in synthetic_data.iterrows():
@@ -59,7 +59,6 @@ for _, row in synthetic_data.iterrows():
         # Agregar datos adicionales
         message_dict["usuario_id"] = USER_ID
         message_dict["transaccion_id"] = str(uuid.uuid4())
-        message_dict["timestamp"] = datetime.now().isoformat()
 
         message_json = json.dumps(message_dict)
         

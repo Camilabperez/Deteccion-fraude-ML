@@ -29,7 +29,7 @@ services:
   
   postgres:
     image: postgres:15
-    container_name: postgres
+    container_name: postgresbd
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
@@ -51,6 +51,24 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./services/grafana:/var/lib/grafana # Persistencia de datos
+      - ./services/grafana:/var/lib/grafana 
       - ./services/grafana/conf/grafana.ini:/etc/grafana/grafana.ini:rw 
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:latest
+    container_name: mlflow
+    ports:
+      - "8080:8080"
+    environment:
+      - MLFLOW_BACKEND_STORE_URI=sqlite:///mlflow.db
+      - MLFLOW_DEFAULT_ARTIFACT_ROOT=/mlflow/artifacts
+    volumes:
+      - ./services/mlflow:/mlflow  
+    command: >
+      mlflow server
+      --host 0.0.0.0
+      --port 8080
+      --backend-store-uri sqlite:///mlflow.db
+      --default-artifact-root /mlflow/artifacts
+
       

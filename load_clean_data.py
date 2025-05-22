@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from imblearn.over_sampling import SMOTE
 
-# Function to load and clean data
+# Funcion para cargar y limpiar los datos:
 # data = load_data()
 # data1, X, Y = clean_data(data)
 # X_resampled, y_resampled = oversample(X,Y)

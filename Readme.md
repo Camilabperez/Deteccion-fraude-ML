@@ -2,7 +2,7 @@
 Antes de comenzar, es necesario 
 1. Tener python, docker, 
 1. Instalar las dependencias del entorno:
-pip install mlflow numpy pandas matplotlib seaborn ipykernel notebook loguru confluent_kafka sdv
+pip install -r requirements.txt
 
 
 # Ejecución del Proyecto
@@ -52,21 +52,27 @@ La base de datos utilizada para almacenar las transacciones se implementa median
 
 ##  Acceso desde Terminal
 Para acceder al contenedor y utilizar psql para consultas directas, ejecutar:
+```bash
 docker exec -it postgres bash
 psql -U user -d transactions_db
+```
 
-## Parametros de conexion:
-Server: localhost
-Port: 5432
-POSTGRES_USER: user
-POSTGRES_PASSWORD: password
-POSTGRES_DB: transactions_db
+**Parametros de conexion:**
 
-Para salir del modo de selección interactiva en psql, presionar la tecla q.
+- Server: localhost
+- Port: 5432
+- POSTGRES_USER: user
+- POSTGRES_PASSWORD: password
+- POSTGRES_DB: transactions_db
 
-## Esquema de la tabla
+**Consultas:**
+- Para salir del modo de selección interactiva en psql, presionar la tecla q.
+
+**Esquema de la tabla:**
+
 La base de datos contiene la siguiente tabla principal para registrar transacciones
 
+```sql
 CREATE TABLE transacciones (
     id SERIAL PRIMARY KEY,
     usuario_id INT,
@@ -82,13 +88,13 @@ CREATE TABLE transacciones (
     gap DECIMAL(10,2),          
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
 );
-
+```
 # Visualización con Grafana
 Grafana permite conectarse a la base de datos PostgreSQL para visualizar las métricas de las transacciones en tiempo real.
 
-URL de acceso: http://localhost:3000/
+**URL de acceso**: http://localhost:3000/
 
-Configuración de la conexión a PostgreSQL en Grafana
+**Configuración de la conexión a PostgreSQL en Grafana**
 - host: postgres:5432
 - db:transactions_db
 - username: admin / grafanareader

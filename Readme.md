@@ -10,7 +10,7 @@ pip install -r requirements.txt
 
 2. Levantar los contenedores. Ejecutá el siguiente comando para iniciar los servicios definidos en docker-compose.yml:
 ```bash
-docker-compose up -d
+docker-compose up -d
 ```
 Verificá que los contenedores estén activos con:
 

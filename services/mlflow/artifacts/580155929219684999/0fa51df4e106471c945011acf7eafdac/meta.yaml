@@ -1,0 +1,17 @@
+artifact_uri: file:///C:/Users/camil/OneDrive/Escritorio/Tesis/proyectos/main/services/mlflow/artifacts/580155929219684999/0fa51df4e106471c945011acf7eafdac/artifacts
+end_time: 1748457032614
+entry_point_name: ''
+experiment_id: '580155929219684999'
+lifecycle_stage: active
+run_id: 0fa51df4e106471c945011acf7eafdac
+run_name: 'XGBoost {''n_estimators'': 100, ''max_depth'': 6, ''learning_rate'': 0.1,
+  ''subsample'': 0.7, ''colsample_bytree'': 0.9, ''scale_pos_weight'': 2, ''use_label_encoder'':
+  False, ''eval_metric'': ''logloss''}'
+run_uuid: 0fa51df4e106471c945011acf7eafdac
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748457028718
+status: 3
+tags: []
+user_id: camil

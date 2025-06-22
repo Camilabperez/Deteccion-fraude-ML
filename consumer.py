@@ -27,7 +27,7 @@ consumer = Consumer(kafka_conf)
 topic = 'fraud_transactions'
 consumer.subscribe([topic])
 
-# Consumir mensaje de Kafka
+# Funcion que procesa mensaje de Kafka
 def consume():
     global consuming
     logger.info("Esperando mensajes de Kafka...")

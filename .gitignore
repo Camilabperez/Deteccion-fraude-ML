@@ -1,6 +1,7 @@
 # Ignorar todo por defecto
 viejo/__pycache__
 viejo
+logs/*
 __pycache__/
 **/__pycache__/
 .venv

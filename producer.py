@@ -31,15 +31,14 @@ def delivery_report(err, msg):
 # Cargar y limpiar los datos
 data = load_data()
 cleandata, X, Y = clean_data(data)
-X_resampled, y_resampled = oversample(X, Y)
 
 # Obtener metadata de la tabla, si no lo encuentra lo crea a partir del dataset
-if os.path.exists("basedata_metadata.json"):
-    metadata = SingleTableMetadata.load_from_json("basedata_metadata.json")
+if os.path.exists("data/basedata_metadata.json"):
+    metadata = SingleTableMetadata.load_from_json("data/basedata_metadata.json")
 else:
     metadata = SingleTableMetadata()
     metadata.detect_from_dataframe(X)
-    metadata.save_to_json("basedata_metadata.json")
+    metadata.save_to_json("data/basedata_metadata.json")
 
 # Definir el modelo CTGAN
 ctgan = CTGANSynthesizer(metadata, 

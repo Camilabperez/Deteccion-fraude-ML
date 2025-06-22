@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/camil/OneDrive/Escritorio/Tesis/proyectos/main/services/mlflow/artifacts/580155929219684999/0e3e8032f0394736976cc7c70b6450c3/artifacts
+end_time: 1750450759123
+entry_point_name: ''
+experiment_id: '580155929219684999'
+lifecycle_stage: active
+run_id: 0e3e8032f0394736976cc7c70b6450c3
+run_name: Logistic_Regression_Best_Model_GridSearch
+run_uuid: 0e3e8032f0394736976cc7c70b6450c3
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1750450749280
+status: 3
+tags: []
+user_id: camil

@@ -1,8 +1,12 @@
 # Configuración inicial
 Antes de comenzar, es necesario 
 1. Tener python, docker, 
-1. Instalar las dependencias del entorno:
+1. Crear un entorno virtual para las dependencias,  activarlo e instalar las dependencias del entorno:
+```bash
+python -m venv .venv
+.\.venv\Scripts\activate
 pip install -r requirements.txt
+ ```
 
 
 # Ejecución del Proyecto
@@ -108,8 +112,6 @@ El conjunto de datos de detección de fraude financiero contiene información re
 ## Estructura del Conjunto de Datos
 El conjunto de datos se encuentra organizado en la carpeta `data`, que contiene subcarpetas con archivos CSV que incluyen información específica sobre transacciones financieras, perfiles de clientes, patrones fraudulentos, montos de transacciones e información de los comerciantes. La estructura es la siguiente:
 
-
-
 - data
   - Transaction Data
     - transaction_records.csv: Contains transaction records with details such as transaction ID, date, amount, and customer ID.
@@ -130,6 +132,3 @@ El conjunto de datos se encuentra organizado en la carpeta `data`, que contiene 
   - Merchant Information
     - merchant_data.csv: Contains information about merchants involved in transactions.
     - transaction_category_labels.csv: Provides category labels for different transaction types.
-
-src
-- data.py: Python file containing code to generate the dataset based on real-world data.

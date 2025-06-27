@@ -68,3 +68,33 @@ services:
       --port 8080
       --backend-store-uri sqlite:///mlflow.db
       --default-artifact-root /mlflow/artifacts
+  producer:
+    container_name: producer
+    build: ./producer
+    depends_on:
+      - kafka
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./producer:/app
+    environment:
+      - KAFKA_BROKER=kafka:9092
+
+  consumer:
+    container_name: consumer
+    build: ./consumer
+    ports:
+      - "8082:8080"
+    depends_on:
+      - kafka
+      - postgres
+      - mlflow
+    volumes:
+      - ./consumer:/app
+    environment:
+      - KAFKA_BROKER=kafka:9092
+      - POSTGRES_HOST=postgres
+      - PPOSTGRES_PORT=5432
+      - POSTGRES_DB=transactions_db
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password

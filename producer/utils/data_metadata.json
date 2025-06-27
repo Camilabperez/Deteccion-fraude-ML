@@ -1,0 +1,34 @@
+{
+    "columns": {
+        "Category": {
+            "sdtype": "categorical"
+        },
+        "TransactionAmount": {
+            "sdtype": "numerical"
+        },
+        "AnomalyScore": {
+            "sdtype": "numerical"
+        },
+        "Timestamp": {
+            "datetime_format": "%Y-%m-%d %H:%M:%S",
+            "sdtype": "datetime"
+        },
+        "Amount": {
+            "sdtype": "numerical"
+        },
+        "AccountBalance": {
+            "sdtype": "numerical"
+        },
+        "LastLogin": {
+            "datetime_format": "%Y-%m-%d",
+            "sdtype": "datetime"
+        },
+        "SuspiciousFlag": {
+            "sdtype": "categorical"
+        },
+        "Hour": {
+            "sdtype": "numerical"
+        }
+    },
+    "METADATA_SPEC_VERSION": "SINGLE_TABLE_V1"
+}

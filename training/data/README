@@ -1,0 +1,26 @@
+# Conjunto de Datos de Detección de Fraude
+El conjunto de datos de detección de fraude financiero contiene información relacionada con transacciones financieras y patrones fraudulentos. Está diseñado para el entrenamiento y evaluación de modelos de aprendizaje automático orientados a la detección de fraudes.
+
+## Estructura del Conjunto de Datos
+El conjunto de datos se encuentra organizado en la carpeta `data`, que contiene subcarpetas con archivos CSV que incluyen información específica sobre transacciones financieras, perfiles de clientes, patrones fraudulentos, montos de transacciones e información de los comerciantes. La estructura es la siguiente:
+
+- data
+  - Transaction Data
+    - transaction_records.csv: Contains transaction records with details such as transaction ID, date, amount, and customer ID.
+    - transaction_metadata.csv: Contains additional metadata for each transaction.
+
+  - Customer Profiles
+    - customer_data.csv: Includes customer profiles with information such as name, age, address, and contact details.
+    - account_activity.csv: Provides details of customer account activity, including account balance, transaction history, and account status.
+
+  - Fraudulent Patterns
+    - fraud_indicators.csv: Contains indicators of fraudulent patterns and suspicious activities.
+    - suspicious_activity.csv: Provides specific details of transactions flagged as suspicious.
+
+  - Transaction Amounts
+    - amount_data.csv: Includes transaction amounts for each transaction.
+    - anomaly_scores.csv: Provides anomaly scores for transaction amounts, indicating potential fraudulence.
+
+  - Merchant Information
+    - merchant_data.csv: Contains information about merchants involved in transactions.
+    - transaction_category_labels.csv: Provides category labels for different transaction types.

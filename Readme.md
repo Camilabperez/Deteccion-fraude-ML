@@ -1,4 +1,44 @@
-# Configuración inicial
+# Sistema de detección de transacciones fraudulentas usando machine learning y microservicios
+Este proyecto implementa un pipeline completo para la detección automática de fraudes en transacciones utilizando un modelo de machine learning registrado en MLflow. El sistema opera de forma asíncrona mediante Kafka, y expone una API con FastAPI que escucha eventos, realiza transformaciones y predicciones, y almacena los resultados en PostgreSQL. Para el monitoreo en tiempo real se utiliza Grafana, conectado a la base de datos.
+
+El sistema está completamente contenerizado con Docker y orquestado mediante Docker Compose, permitiendo una puesta en marcha sencilla y replicable.
+
+## Estructura del proyecto
+main/
+- docker-compose.yml: Orquestación de todos los servicios
+- README.md: Documentación del proyecto
+- requirements.txt
+- .gitignore
+
+- training/: Entrenamiento y registro del modelo ML
+  - data/: Contiene los archivos que se utilizaron como dataset para entrenar a los modelos
+  - logs/:
+  - resultados/:
+  - fraud-detecion.ipybn:
+  - load_clean_data.py: 
+
+- consumer-app/: API con FastAPI que consume mensajes de Kafka
+  - app/
+    - consumer.py : Lógica de consumo y predicción
+    - templates/
+      - status.html: Vista del estado de los servicios
+  - Dockerfile: Imagen del consumer
+  - requirements.txt
+
+- producer/: Servicio que simula transacciones
+   - send_tx.py
+   - Dockerfile
+   -requirements.txt
+
+- services/:   
+  - grafana/
+  - kafka/                 
+  - mlflow/  
+  - postgres/ 
+  - zookeper/                  
+
+
+## Configuración inicial
 Antes de comenzar, es necesario 
 1. Tener python, docker, 
 1. Crear un entorno virtual para las dependencias,  activarlo e instalar las dependencias del entorno:
@@ -9,7 +49,7 @@ pip install -r requirements.txt
  ```
 
 
-# Ejecución del Proyecto
+## Ejecución del Proyecto
 1. Asegurate de tener Docker Desktop corriendo antes de continuar.
 
 2. Levantar los contenedores. Ejecutá el siguiente comando para iniciar los servicios definidos en docker-compose.yml:
@@ -50,11 +90,11 @@ curl.exe -X 'GET' 'http://127.0.0.1:8000/start' -H 'accept: application/json'
 
 Esto iniciará el hilo consumidor que escucha el topic de Kafka y evalúa las transacciones entrantes.
 
-
-# Postgres
+## Servicios
+### Postgres
 La base de datos utilizada para almacenar las transacciones se implementa mediante un contenedor Docker que ejecuta PostgreSQL. A continuación se detallan las configuraciones clave y los comandos para su acceso
 
-##  Acceso desde Terminal
+**Acceso desde Terminal**
 Para acceder al contenedor y utilizar psql para consultas directas, ejecutar:
 ```bash
 docker exec -it postgres bash
@@ -106,29 +146,3 @@ Grafana permite conectarse a la base de datos PostgreSQL para visualizar las mé
 - tsl mode: disabled
 
 
-# Conjunto de Datos de Detección de Fraude
-El conjunto de datos de detección de fraude financiero contiene información relacionada con transacciones financieras y patrones fraudulentos. Está diseñado para el entrenamiento y evaluación de modelos de aprendizaje automático orientados a la detección de fraudes.
-
-## Estructura del Conjunto de Datos
-El conjunto de datos se encuentra organizado en la carpeta `data`, que contiene subcarpetas con archivos CSV que incluyen información específica sobre transacciones financieras, perfiles de clientes, patrones fraudulentos, montos de transacciones e información de los comerciantes. La estructura es la siguiente:
-
-- data
-  - Transaction Data
-    - transaction_records.csv: Contains transaction records with details such as transaction ID, date, amount, and customer ID.
-    - transaction_metadata.csv: Contains additional metadata for each transaction.
-
-  - Customer Profiles
-    - customer_data.csv: Includes customer profiles with information such as name, age, address, and contact details.
-    - account_activity.csv: Provides details of customer account activity, including account balance, transaction history, and account status.
-
-  - Fraudulent Patterns
-    - fraud_indicators.csv: Contains indicators of fraudulent patterns and suspicious activities.
-    - suspicious_activity.csv: Provides specific details of transactions flagged as suspicious.
-
-  - Transaction Amounts
-    - amount_data.csv: Includes transaction amounts for each transaction.
-    - anomaly_scores.csv: Provides anomaly scores for transaction amounts, indicating potential fraudulence.
-
-  - Merchant Information
-    - merchant_data.csv: Contains information about merchants involved in transactions.
-    - transaction_category_labels.csv: Provides category labels for different transaction types.

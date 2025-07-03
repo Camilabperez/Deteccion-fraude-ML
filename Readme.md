@@ -3,52 +3,6 @@ Este proyecto implementa un pipeline completo para la detección automática de 
 
 El sistema está completamente contenerizado con Docker y orquestado mediante Docker Compose, permitiendo una puesta en marcha sencilla y replicable.
 
-## Estructura del proyecto
-main/
-- docker-compose.yml: Orquestación de todos los servicios
-- README.md: Documentación del proyecto
-- requirements.txt
-- .gitignore
-
-- training/: Entrenamiento y registro del modelo ML
-  - data/: Contiene los archivos que se utilizaron como dataset para entrenar a los modelos
-  - logs/:
-  - resultados/:
-  - fraud-detecion.ipybn:
-  - load_clean_data.py: 
-
-- consumer-app/: API con FastAPI que consume mensajes de Kafka
-  - app/
-    - consumer.py : Lógica de consumo y predicción
-    - templates/
-      - status.html: Vista del estado de los servicios
-  - Dockerfile: Imagen del consumer
-  - requirements.txt
-
-- producer/: Servicio que simula transacciones
-   - send_tx.py
-   - Dockerfile
-   -requirements.txt
-
-- services/:   
-  - grafana/
-  - kafka/                 
-  - mlflow/  
-  - postgres/ 
-  - zookeper/                  
-
-
-## Configuración inicial
-Antes de comenzar, es necesario 
-1. Tener python, docker, 
-1. Crear un entorno virtual para las dependencias,  activarlo e instalar las dependencias del entorno:
-```bash
-python -m venv .venv
-.\.venv\Scripts\activate
-pip install -r requirements.txt
- ```
-
-
 ## Ejecución del Proyecto
 1. Asegurate de tener Docker Desktop corriendo antes de continuar.
 
@@ -63,32 +17,56 @@ docker ps
 ```
 Asegurate de que Kafka y Zookeeper estén en funcionamiento.
 
-3. Iniciar la API con Uvicorn
-Desde la raíz del proyecto, ejecutá el siguiente comando:
+3. En el navegador web ingrese a http://127.0.0.1:8082/admin
+- Iniciar aplicacion: Esto iniciará el hilo consumidor que escucha el topic de Kafka y evalúa las transacciones entrantes.
+- Generar transacciones: Esto simula el envío de transacciones para su análisis.
 
+## Estructura del proyecto
+main/
+- docker-compose.yml: Orquestación de todos los servicios
+- README.md: Documentación del proyecto
+- requirements.txt
+- .gitignore
+
+- training/: Entrenamiento y registro del modelo ML
+  - data/: Contiene los archivos que se utilizaron como dataset para entrenar a los modelos
+  - logs/:
+  - resultados/:
+  - fraud-detecion.ipybn:
+  - load_clean_data.py: 
+
+- app
+  - consumer/:
+    - consumer_app.py : API con FastAPI que consume mensajes de Kafka
+    - consumer_service.py : Lógica de consumo y predicción
+    - templates/
+      - status.html: Vista del estado de los servicios
+    - Dockerfile: Imagen del consumer
+    - requirements.txt
+
+  - producer/: 
+    - producer_service.py:  API con FastAPI
+    - producer_app.py: Servicio que simula transacciones
+    - Dockerfile
+    - requirements.txt
+
+- services/:   
+  - grafana/
+  - kafka/                 
+  - mlflow/  
+  - postgres/ 
+  - zookeper/                  
+
+
+## Configuración inicial parar desarrollo:
+Antes de comenzar, es necesario 
+1. Tener python, docker, 
+1. Crear un entorno virtual para las dependencias,  activarlo e instalar las dependencias del entorno:
 ```bash
-python -m uvicorn consumer:app --reload
-```
-
-Esto levanta el servidor FastAPI que consume mensajes de Kafka y ejecuta predicciones.
-
-4. Enviar mensajes con el productor
-En otra terminal, ejecutá:
-
-```bash
-python producer.py
-```
-
-Esto simula el envío de transacciones para su análisis.
-
-5. Activar el consumidor desde la API
-Podés iniciar el proceso de consumo accediendo al endpoint /start:
-
-```bash
-curl.exe -X 'GET' 'http://127.0.0.1:8000/start' -H 'accept: application/json'
-```
-
-Esto iniciará el hilo consumidor que escucha el topic de Kafka y evalúa las transacciones entrantes.
+python -m venv .venv
+.\.venv\Scripts\activate
+pip install -r requirements.txt
+ ```
 
 ## Servicios
 ### Postgres

@@ -18,12 +18,13 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     depends_on:
       - zookeeper
     volumes:
-    - ./services/kafka:/var/lib/kafka
+      - ./services/kafka:/var/lib/kafka
   
   postgres:
     image: postgres:15
@@ -56,33 +57,37 @@ services:
     image: ghcr.io/mlflow/mlflow:latest
     container_name: mlflow
     ports:
-      - "8080:8080"
-    environment:
-      - MLFLOW_BACKEND_STORE_URI=sqlite:///mlflow.db
-      - MLFLOW_DEFAULT_ARTIFACT_ROOT=/mlflow/artifacts
+      - "8080:5000"
     volumes:
-      - ./services/mlflow:/mlflow  
-    command: >
-      mlflow server
-      --host 0.0.0.0
-      --port 8080
-      --backend-store-uri sqlite:///mlflow.db
-      --default-artifact-root /mlflow/artifacts
+      - ./services/mlflow/db:/mlflow_backend
+      - ./services/mlflow/artifacts:/mlruns
+    command:
+      - "mlflow"
+      - "server"
+      - "--host"
+      - "0.0.0.0" # Escucha en todas las interfaces de red dentro del contenedor.
+      - "--port"
+      - "5000" # Puerto interno del contenedor.
+      - "--backend-store-uri"
+      - "sqlite:////mlflow_backend/mlflow.db" # Usa una BD SQLite para los metadatos en el volumen.
+      - "--default-artifact-root"
+      - "file:///mlruns" 
+
   producer:
     container_name: producer
-    build: ./producer
+    build: ./app/producer
     depends_on:
       - kafka
     ports:
       - "8081:8080"
     volumes:
-      - ./producer:/app
+      - ./app/producer:/app
     environment:
       - KAFKA_BROKER=kafka:9092
 
   consumer:
     container_name: consumer
-    build: ./consumer
+    build: ./app/consumer
     ports:
       - "8082:8080"
     depends_on:
@@ -90,7 +95,7 @@ services:
       - postgres
       - mlflow
     volumes:
-      - ./consumer:/app
+      - ./app/consumer:/app
     environment:
       - KAFKA_BROKER=kafka:9092
       - POSTGRES_HOST=postgres
@@ -98,3 +103,10 @@ services:
       - POSTGRES_DB=transactions_db
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
+
+
+volumes:
+  # Aquí se declaran los volúmenes para que Docker los gestione.
+  # Esto asegura que los datos persistan incluso si el contenedor se elimina.
+  mlflow_data:
+  mlflow_artifacts:

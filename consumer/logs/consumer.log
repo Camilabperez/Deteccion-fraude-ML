@@ -1,4 +1,0 @@
-2025-06-27 16:34:53.909 | ERROR    | consumer:loadmodel:96 - loadmodel: Error al cargar el modelo: No module named 'imblearn'
-2025-06-27 16:53:59.007 | ERROR    | consumer:loadmodel:96 - loadmodel: Error al cargar el modelo: No module named 'imblearn'
-2025-06-27 16:54:23.567 | ERROR    | consumer:loadmodel:96 - loadmodel: Error al cargar el modelo: No module named 'imblearn'
-2025-06-27 16:56:31.239 | ERROR    | consumer:loadmodel:96 - loadmodel: Error al cargar el modelo: No module named 'imblearn'

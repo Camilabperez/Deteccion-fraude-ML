@@ -1,0 +1,162 @@
+2025-06-26 22:45:30.267 | ERROR    | __main__:delivery_report:24 - Mensaje fallido: KafkaError{code=_MSG_TIMED_OUT,val=-192,str="Local: Message timed out"}
+2025-06-26 22:45:30.267 | ERROR    | __main__:delivery_report:24 - Mensaje fallido: KafkaError{code=_MSG_TIMED_OUT,val=-192,str="Local: Message timed out"}
+2025-06-26 22:45:30.267 | ERROR    | __main__:delivery_report:24 - Mensaje fallido: KafkaError{code=_MSG_TIMED_OUT,val=-192,str="Local: Message timed out"}
+2025-06-26 22:45:30.267 | ERROR    | __main__:delivery_report:24 - Mensaje fallido: KafkaError{code=_MSG_TIMED_OUT,val=-192,str="Local: Message timed out"}
+2025-06-26 22:45:30.267 | ERROR    | __main__:delivery_report:24 - Mensaje fallido: KafkaError{code=_MSG_TIMED_OUT,val=-192,str="Local: Message timed out"}
+2025-06-26 22:45:30.267 | ERROR    | __main__:delivery_report:24 - Mensaje fallido: KafkaError{code=_MSG_TIMED_OUT,val=-192,str="Local: Message timed out"}
+2025-06-26 22:45:30.267 | ERROR    | __main__:delivery_report:24 - Mensaje fallido: KafkaError{code=_MSG_TIMED_OUT,val=-192,str="Local: Message timed out"}
+2025-06-26 22:45:30.267 | ERROR    | __main__:delivery_report:24 - Mensaje fallido: KafkaError{code=_MSG_TIMED_OUT,val=-192,str="Local: Message timed out"}
+2025-06-26 22:45:30.267 | INFO     | __main__:<module>:71 - Todos los mensajes han sido enviados.
+2025-06-26 23:26:06.776 | INFO     | __main__:<module>:95 - Todos los mensajes han sido enviados.
+2025-06-26 23:29:35.488 | ERROR    | __main__:<module>:95 - Kafka no está levantado. Abortando...
+2025-06-27 11:48:22.399 | INFO     | producer:kafka_esta_disponible:31 - Kafka no disponible (intento 1/3): NoBrokersAvailable
+2025-06-27 11:48:27.072 | INFO     | producer:kafka_esta_disponible:31 - Kafka no disponible (intento 2/3): NoBrokersAvailable
+2025-06-27 11:48:31.748 | INFO     | producer:kafka_esta_disponible:31 - Kafka no disponible (intento 3/3): NoBrokersAvailable
+2025-06-27 11:48:33.750 | ERROR    | producer:generar_transacciones:42 - Kafka no está disponible
+2025-06-27 11:49:28.949 | INFO     | producer:kafka_esta_disponible:31 - Kafka no disponible - kafka:9092 - Intento 1/3: NoBrokersAvailable
+2025-06-27 11:49:33.657 | INFO     | producer:kafka_esta_disponible:31 - Kafka no disponible - kafka:9092 - Intento 2/3: NoBrokersAvailable
+2025-06-27 11:49:38.351 | INFO     | producer:kafka_esta_disponible:31 - Kafka no disponible - kafka:9092 - Intento 3/3: NoBrokersAvailable
+2025-06-27 11:49:40.352 | ERROR    | producer:generar_transacciones:42 - Kafka no está disponible
+2025-06-27 11:50:58.089 | INFO     | producer:generar_transacciones:76 - Transacciones enviadas.
+2025-06-27 21:37:03.578 | INFO     | producer_service:kafka_esta_disponible:31 - Kafka no disponible - kafka:9092 - Intento 1/3: NodeNotReadyError: 1
+2025-06-27 21:37:07.594 | INFO     | producer_service:kafka_esta_disponible:31 - Kafka no disponible - kafka:9092 - Intento 2/3: NodeNotReadyError: 1
+2025-06-27 21:37:11.615 | INFO     | producer_service:kafka_esta_disponible:31 - Kafka no disponible - kafka:9092 - Intento 3/3: NodeNotReadyError: 1
+2025-06-27 21:37:13.619 | ERROR    | producer_service:generar_transacciones:42 - Kafka no está disponible
+2025-06-28 13:32:37.485 | INFO     | producer_service:kafka_esta_disponible:31 - Kafka no disponible - kafka:9092 - Intento 1/3: NodeNotReadyError: 1
+2025-06-28 13:32:41.513 | INFO     | producer_service:kafka_esta_disponible:31 - Kafka no disponible - kafka:9092 - Intento 2/3: NodeNotReadyError: 1
+2025-06-28 13:32:45.529 | INFO     | producer_service:kafka_esta_disponible:31 - Kafka no disponible - kafka:9092 - Intento 3/3: NodeNotReadyError: 1
+2025-06-28 13:32:47.533 | ERROR    | producer_service:generar_transacciones:42 - Kafka no está disponible
+2025-06-28 13:37:53.954 | INFO     | producer_service:generar_transacciones:76 - Transacciones enviadas.
+2025-06-28 14:37:31.902 | INFO     | producer_service:generar_transacciones:76 - Transacciones enviadas.
+2025-06-30 12:49:29.341 | INFO     | producer_service:generar_transacciones:76 - Transacciones enviadas.
+2025-06-30 13:05:59.271 | INFO     | producer_service:generar_transacciones:76 - Transacciones enviadas.
+2025-06-30 13:05:59.271 | INFO     | producer_service:generar_transacciones:76 - Transacciones enviadas.
+2025-06-30 13:24:12.271 | INFO     | producer_service:generar_transacciones:76 - Transacciones enviadas.
+2025-06-30 13:24:12.271 | INFO     | producer_service:generar_transacciones:76 - Transacciones enviadas.
+2025-06-30 13:24:12.271 | INFO     | producer_service:generar_transacciones:76 - Transacciones enviadas.
+2025-06-30 13:42:05.507 | INFO     | producer_service:generar_transacciones:76 - Transacciones enviadas.
+2025-06-30 13:42:05.507 | INFO     | producer_service:generar_transacciones:76 - Transacciones enviadas.
+2025-06-30 13:42:05.507 | INFO     | producer_service:generar_transacciones:76 - Transacciones enviadas.
+2025-06-30 13:42:05.507 | INFO     | producer_service:generar_transacciones:76 - Transacciones enviadas.
+2025-06-30 13:45:00.780 | INFO     | producer_service:generar_transacciones:76 - Transacciones enviadas.
+2025-06-30 13:45:00.780 | INFO     | producer_service:generar_transacciones:76 - Transacciones enviadas.
+2025-06-30 13:45:00.780 | INFO     | producer_service:generar_transacciones:76 - Transacciones enviadas.
+2025-06-30 13:45:00.780 | INFO     | producer_service:generar_transacciones:76 - Transacciones enviadas.
+2025-06-30 13:45:00.780 | INFO     | producer_service:generar_transacciones:76 - Transacciones enviadas.
+2025-07-01 09:24:06.743 | INFO     | __main__:kafka_esta_disponible:32 - Kafka no disponible - kafka:9092 - Intento 1/3: NoBrokersAvailable
+2025-07-01 09:24:11.462 | INFO     | __main__:kafka_esta_disponible:32 - Kafka no disponible - kafka:9092 - Intento 2/3: NoBrokersAvailable
+2025-07-01 09:24:16.156 | INFO     | __main__:kafka_esta_disponible:32 - Kafka no disponible - kafka:9092 - Intento 3/3: NoBrokersAvailable
+2025-07-01 09:24:18.159 | ERROR    | __main__:generar_transacciones:43 - Kafka no está disponible
+2025-07-01 12:36:51.646 | INFO     | producer_service:generar_transacciones:76 - Transacciones enviadas.
+2025-07-01 15:06:53.497 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-01 16:25:08.776 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-01 16:32:59.638 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-01 16:32:59.638 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-01 16:35:52.365 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-01 16:35:52.365 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-01 16:35:52.365 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:00:02.888 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:10:58.566 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:10:58.566 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:17:09.121 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:17:09.121 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:17:09.121 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:20:46.330 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:20:46.330 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:20:46.330 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:20:46.330 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:42:16.302 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:42:16.302 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:42:16.302 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:42:16.302 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:42:16.302 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:55:37.435 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:55:37.435 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:55:37.435 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:55:37.435 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:55:37.435 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 02:55:37.435 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:00:12.286 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:00:12.286 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:00:12.286 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:00:12.286 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:00:12.286 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:00:12.286 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:00:12.286 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:07:38.314 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:07:38.314 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:07:38.314 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:07:38.314 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:07:38.314 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:07:38.314 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:07:38.314 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:07:38.314 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:14:48.066 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:14:48.066 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:14:48.066 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:14:48.066 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:14:48.066 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:14:48.066 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:14:48.066 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:14:48.066 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:14:48.066 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:16:22.299 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:16:22.299 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:16:22.299 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:16:22.299 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:16:22.299 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:16:22.299 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:16:22.299 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:16:22.299 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:16:22.299 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:16:22.299 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:22:39.121 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:22:39.121 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:22:39.121 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:22:39.121 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:22:39.121 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:22:39.121 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:22:39.121 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:22:39.121 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:22:39.121 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:22:39.121 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:22:39.121 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:24:05.838 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:24:05.838 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:24:05.838 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:24:05.838 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:24:05.838 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:24:05.838 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:24:05.838 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:24:05.838 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:24:05.838 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:24:05.838 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:24:05.838 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:24:05.838 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:27:23.669 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:27:23.669 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:27:23.669 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:27:23.669 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:27:23.669 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:27:23.669 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:27:23.669 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:27:23.669 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:27:23.669 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:27:23.669 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:27:23.669 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:27:23.669 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 03:27:23.669 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 13:04:36.509 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 13:04:36.509 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 13:04:36.509 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 13:04:36.509 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 13:04:36.509 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 13:04:36.509 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 13:04:36.509 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 13:04:36.509 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 13:04:36.509 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 13:04:36.509 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 13:04:36.509 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 13:04:36.509 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 13:04:36.509 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.
+2025-07-03 13:04:36.509 | INFO     | producer_service:generar_transacciones:88 - Transacciones enviadas.

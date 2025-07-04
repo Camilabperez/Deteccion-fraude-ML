@@ -9,17 +9,17 @@ def get_clean_data(mns):
         data_dict = json.loads(mns)  
         data = pd.DataFrame([data_dict]) 
 
-        data['Timestamp'] = pd.to_datetime(data['Timestamp'])
+        data['fecha'] = pd.to_datetime(data['fecha'])
         data['LastLogin'] = pd.to_datetime(data['LastLogin'])
 
         data = data.drop(['transaccion_id', 'usuario_id'], axis=1)
-        data['Hour'] = data['Timestamp'].dt.hour
+        data['Hour'] = data['fecha'].dt.hour
 
-        data['gap'] = (data['Timestamp'] - data['LastLogin']).dt.days.abs()
-        data['DayOfWeek'] = data['Timestamp'].dt.dayofweek
+        data['gap'] = (data['fecha'] - data['LastLogin']).dt.days.abs()
+        data['DayOfWeek'] = data['fecha'].dt.dayofweek
 
         # Mes del año (1=enero, 12=diciembre)
-        data['Month'] = data['Timestamp'].dt.month
+        data['Month'] = data['fecha'].dt.month
 
         # Proporción del monto sobre el saldo
         data['TransactionAmountRelativeToBalance'] = data['TransactionAmount'] / data['AccountBalance']
@@ -31,9 +31,8 @@ def get_clean_data(mns):
         data['BalancePostTransaction'] = data['AccountBalance'] - data['TransactionAmount']
         data['IsWeekend'] = data['DayOfWeek'].isin([5, 6]).astype(int)
 
-        data = data.drop(['Timestamp','LastLogin'],axis=1)
+        data = data.drop(['fecha','LastLogin'],axis=1)
 
-        logger.info(f"Datos recibidos: {data}")
         data = codificar_categoria(data)
 
         return data

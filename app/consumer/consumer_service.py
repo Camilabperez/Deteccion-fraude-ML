@@ -50,10 +50,10 @@ class KafkaConsumerService:
                     return
                 
                 prediction_result = get_prediction(process_mnsg, self.model)
-                save_to_postgres(prediction_result, transaction)
-
                 prediction = prediction_result.get("prediction", "N/A")
                 logger.success(f"Predicción obtenida: {prediction}")
+
+                save_to_postgres(prediction_result, transaction)
 
             except Exception as e:
                 logger.error(f"Error procesando mensaje: {e}")
@@ -146,7 +146,6 @@ def save_to_postgres(result, mns):
         usuario_id = mns_dict.get("usuario_id", "N/A")
         transaccion_id = mns_dict.get("transaccion_id", "N/A")
         prediction_label = result.get("prediction", "N/A")
-
         category = result.get("Category", ["N/A"])[0]
         transaction_amount = result.get("TransactionAmount", ["N/A"])[0]
         anomaly_score = result.get("AnomalyScore", ["N/A"])[0]
@@ -155,6 +154,7 @@ def save_to_postgres(result, mns):
         suspiciousFlag = result.get("SuspiciousFlag", ["N/A"])[0]
         hour = result.get("Hour", ["N/A"])[0]
         gap = result.get("gap", ["N/A"])[0]
+        timestamp = mns_dict.get("fecha", "N/A")
 
         # Configurar la conexión a PostgreSQL
         conn = psycopg2.connect(
@@ -172,8 +172,8 @@ def save_to_postgres(result, mns):
         sql = """
             INSERT INTO transacciones (
                 usuario_id, transaccion_id, FraudIndicator, Category, TransactionAmount, AnomalyScore, Amount, 
-                AccountBalance, SuspiciousFlag, Hour, gap
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                AccountBalance, SuspiciousFlag, Hour, gap, fecha
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
         valores = (
             usuario_id,
@@ -186,7 +186,8 @@ def save_to_postgres(result, mns):
             float(accountBalance),
             int(suspiciousFlag),
             int(hour),
-            int(gap)
+            int(gap),
+            timestamp
         )
 
 

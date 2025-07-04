@@ -1,11 +1,26 @@
+"""
+Módulo de limpieza y transformación de datos para detección de fraude
+
+Este script transforma los datos crudos provenientes de Kafka para ser utilizados por el modelo de ML.
+Incluye limpieza, conversión de fechas, creación de features, codificación de categorías y manejo de errores.
+"""
+
 import pandas as pd
 import numpy as np
 from loguru import logger
 import joblib, os, json
 
 def get_clean_data(mns):
+    """
+    Limpia y transforma un mensaje JSON en un DataFrame con features listas para inferencia.
+
+    Args:
+        mns (str): Mensaje JSON serializado representando una transacción.
+
+    Returns:
+        pd.DataFrame or None: DataFrame con variables procesadas o None si hubo error en codificación.
+    """
     try:
-        # Convertir de JSON a diccionario
         data_dict = json.loads(mns)  
         data = pd.DataFrame([data_dict]) 
 
@@ -18,13 +33,9 @@ def get_clean_data(mns):
         data['gap'] = (data['fecha'] - data['LastLogin']).dt.days.abs()
         data['DayOfWeek'] = data['fecha'].dt.dayofweek
 
-        # Mes del año (1=enero, 12=diciembre)
         data['Month'] = data['fecha'].dt.month
 
-        # Proporción del monto sobre el saldo
         data['TransactionAmountRelativeToBalance'] = data['TransactionAmount'] / data['AccountBalance']
-
-        # Eliminar infinitos por divisiones por cero
         data['TransactionAmountRelativeToBalance'].replace([np.inf, -np.inf], np.nan, inplace=True)
         data['TransactionAmountRelativeToBalance'].fillna(0, inplace=True)
 
@@ -42,6 +53,16 @@ def get_clean_data(mns):
 
 
 def codificar_categoria(mensaje_df):
+    """
+    Codifica la columna categórica 'Category' con un encoder previamente entrenado.
+    Si la categoría no está en el encoder, guarda la transacción en un CSV para revisión manual.
+
+    Args:
+        mensaje_df (pd.DataFrame): DataFrame con columna 'Category'.
+
+    Returns:
+        pd.DataFrame or None: DataFrame con 'Category' codificada o None si hubo error.
+    """
     encoder = joblib.load('utils/category_encoder.pkl')
 
     try:

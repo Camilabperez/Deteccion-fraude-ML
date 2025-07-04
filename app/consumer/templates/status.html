@@ -182,8 +182,10 @@
         clearConsumerLogs.addEventListener("click", async () => {
             try {
                 const response = await fetch("http://localhost:8082/limpiar_logs", { method: 'POST' });
-                consumerLogOutput.textContent = ""
-                fetchLogs(port, consumerLogOutput, consumerTerminal);
+                consumerLogOutput.textContent = "Logs limpiados...";
+                setTimeout(() => {
+                    fetchLogs('8082', consumerLogOutput, consumerTerminal);
+                }, 500);
             } catch (error) {
                 consumerLogOutput.textContent = "Error al limpiar logs: " + error.message;
             }
@@ -191,8 +193,10 @@
         clearProducerLogs.addEventListener("click", async () => {
             try {
                 const response = await fetch("http://localhost:8081/limpiar_logs", { method: 'POST' });
-                producerLogOutput.textContent = ""
-                fetchLogs(port, producerLogOutput, producerTerminal);
+                producerLogOutput.textContent = "Logs limpiados...";
+                setTimeout(() => {
+                    fetchLogs('8081', producerLogOutput, producerTerminal);
+                }, 500);
             } catch (error) {
                 producerLogOutput.textContent = "Error al limpiar logs: " + error.message;
             }

@@ -1,3 +1,7 @@
+"""
+Kafka Consumer Service - Módulo con la logica del consumo de mensajes desde Kafka, inferencia de fraude con modelo MLflow,
+registro en base de datos PostgreSQL y monitoreo de servicios como Grafana, FastAPI y MLflow.
+"""
 from threading import Thread
 from confluent_kafka import Consumer
 from data_service import get_clean_data
@@ -10,10 +14,14 @@ import psycopg2
 import requests
 
 class KafkaConsumerService:
+    """
+    Servicio de consumo Kafka para procesar transacciones sospechosas de fraude.
+    Lee mensajes del tópico configurado, aplica un modelo de ML y guarda resultados en PostgreSQL.
+    """
     model = None  
 
     def __init__(self, topic="fraud_transactions", kafka_broker="kafka:9092"):
-        print("Conectando a Kafka en:", "kafka:9092")
+        """Inicializa el consumidor de Kafka, suscribiéndose al tópico y cargando el modelo."""
         self.kafka_conf = {
             'bootstrap.servers': "kafka:9092",
             'group.id': 'fraud_detection_group',
@@ -30,6 +38,7 @@ class KafkaConsumerService:
         logger.add("logs/consumer.log", rotation="1 MB", retention="10 days", level="DEBUG")
 
     def consume_loop(self):
+        """Loop de consumo que recibe, limpia, predice y guarda mensajes mientras el servicio esté activo."""
         logger.info("Esperando mensajes de Kafka...")
         while self.consuming:
             try:
@@ -63,6 +72,7 @@ class KafkaConsumerService:
         logger.info("Consumidor detenido.")
 
     def start(self):
+        """Inicia el hilo de consumo si no está ya activo."""
         if self.consuming:
             return {"message": "El consumidor ya está en ejecución"}
 
@@ -72,6 +82,7 @@ class KafkaConsumerService:
         return {"message": "Consumidor iniciado"}
 
     def stop(self):
+        """Detiene el hilo de consumo si está activo."""
         if not self.consuming:
             return {"message": "El consumidor no estaba en ejecución"}
 
@@ -81,6 +92,7 @@ class KafkaConsumerService:
         return {"message": "Consumidor detenido"}
 
     def check_kafka(self):
+        """Verifica si Kafka está accesible y devuelve el estado."""
         try:
             metadata = self.consumer.list_topics(timeout=5)
             if metadata.topics:
@@ -93,11 +105,11 @@ class KafkaConsumerService:
 
 
 ############# MLFLOW #############
-# Cargar el modelo de MLflow 
 def loadmodel():
+    """Carga un modelo registrado desde el MLflow Tracking Server."""
     try:
-        mlflow.set_tracking_uri("http://mlflow:8080")  # o localhost si fuera externo
-        model_path = "./model/logistic_regression_model" # nombre del modelo registrado
+        mlflow.set_tracking_uri("http://mlflow:8080")  
+        model_path = "./model/logistic_regression_model" 
         model = mlflow.sklearn.load_model(model_path)
         logger.success("loadmodel: Modelo cargado correctamente desde MLflow Tracking Server.")
         return model
@@ -106,17 +118,11 @@ def loadmodel():
         return None
 
 
-
-# Función para realizar la predicción
 def get_prediction(data_df, model):
+    """Genera una predicción binaria de fraude para una transacción procesada."""
     try:
-        # Obtener las columnas que el modelo espera
         expected_features = model.feature_names_in_
-
-        # Filtrar solo las columnas que el modelo conoce
         data_df = data_df[expected_features]
-
-        # Realizar la predicción con el modelo de MLflow
         prediction = model.predict(data_df)
         prediction_label = "fraudulento" if prediction[0] == 1 else "no fraudulento"
 
@@ -129,6 +135,7 @@ def get_prediction(data_df, model):
         raise HTTPException(status_code=500, detail=f"Error al obtener prediccion: {str(e)}")
 
 def check_mlflow():
+    """Verifica si el MLflow Tracking Server está disponible."""
     try:
         response = requests.get("http://mlflow:5000/")
         if response.status_code == 200:
@@ -138,8 +145,8 @@ def check_mlflow():
     return "🔴 No disponible"
 
 ############# POSTGRE SQL #############
-# Funcion para guardar en PostgreSQL
 def save_to_postgres(result, mns):
+    """Inserta una transacción procesada en la base de datos PostgreSQL."""
     try:
         mns_dict = json.loads(mns)
 
@@ -156,7 +163,6 @@ def save_to_postgres(result, mns):
         gap = result.get("gap", ["N/A"])[0]
         timestamp = mns_dict.get("fecha", "N/A")
 
-        # Configurar la conexión a PostgreSQL
         conn = psycopg2.connect(
             dbname=os.getenv("POSTGRES_DB", "transactions_db"),
             user=os.getenv("POSTGRES_USER", "user"),
@@ -164,11 +170,8 @@ def save_to_postgres(result, mns):
             host= os.getenv("POSTGRES_HOST", "localhost"),
             port= os.getenv("POSTGRES_PORT", "5432"),
         )
-
-        # Crear cursor
         cur = conn.cursor()
 
-        # SQL para insertar datos
         sql = """
             INSERT INTO transacciones (
                 usuario_id, transaccion_id, FraudIndicator, Category, TransactionAmount, AnomalyScore, Amount, 
@@ -190,21 +193,17 @@ def save_to_postgres(result, mns):
             timestamp
         )
 
-
-        # Ejecutar la consulta
         cur.execute(sql, valores)
         conn.commit()
         logger.info("Registro insertado en la base de datos correctamente")
-
-        # Cerrar conexión
         cur.close()
         conn.close()
-    
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al guardar los datos en la bd: {str(e)}")
 
 
 def check_postgres():
+    """Verifica la conectividad con la base de datos PostgreSQL."""
     try:
         conn = psycopg2.connect(
             dbname=os.getenv("POSTGRES_DB", "transactions_db"),
@@ -220,6 +219,7 @@ def check_postgres():
     
 
 def check_grafana():
+    """Verifica si Grafana está disponible a través de su API REST."""
     try:
         response = requests.get("http://grafana:3000/api/health")
         if response.status_code == 200 and response.json().get("database") == "ok":
@@ -228,7 +228,9 @@ def check_grafana():
         pass
     return "🔴 No disponible"
 
+
 def check_fastapi_health(url="http://consumer:8080"):
+    """Verifica si el servicio FastAPI del consumidor está en ejecución."""
     try:
         response = requests.get(url)
         return "🟢 Conectado" if response.ok else "🔴 Error"

@@ -65,11 +65,11 @@ services:
       - "mlflow"
       - "server"
       - "--host"
-      - "0.0.0.0" # Escucha en todas las interfaces de red dentro del contenedor.
+      - "0.0.0.0" 
       - "--port"
-      - "5000" # Puerto interno del contenedor.
+      - "5000" 
       - "--backend-store-uri"
-      - "sqlite:////mlflow_backend/mlflow.db" # Usa una BD SQLite para los metadatos en el volumen.
+      - "sqlite:////mlflow_backend/mlflow.db" 
       - "--default-artifact-root"
       - "file:///mlruns" 
 
@@ -106,7 +106,5 @@ services:
 
 
 volumes:
-  # Aquí se declaran los volúmenes para que Docker los gestione.
-  # Esto asegura que los datos persistan incluso si el contenedor se elimina.
   mlflow_data:
   mlflow_artifacts:

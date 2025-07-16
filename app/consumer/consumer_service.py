@@ -118,22 +118,29 @@ def loadmodel():
         return None
 
 
-def get_prediction(data_df, model):
-    """Genera una predicción binaria de fraude para una transacción procesada."""
+def get_prediction(data_df, model, threshold=0.5):
+    """Genera una predicción binaria personalizada de fraude usando un umbral (threshold)."""
     try:
         expected_features = model.feature_names_in_
         data_df = data_df[expected_features]
-        prediction = model.predict(data_df)
-        prediction_label = "fraudulento" if prediction[0] == 1 else "no fraudulento"
+
+        # Obtener la probabilidad de la clase positiva (fraude = 1)
+        proba = model.predict_proba(data_df)[0][1]
+
+        # Aplicar threshold personalizado
+        prediction = 1 if proba >= threshold else 0
+        prediction_label = "fraudulento" if prediction == 1 else "no fraudulento"
 
         return {
-            **data_df,  # Expande los datos originales
-            "prediction": prediction_label  # Agrega la predicción
+            **data_df.to_dict(orient="records")[0],  # Convierte a dict plano
+            "prediction": prediction_label,
+            "probabilidad_fraude": round(proba, 4),
+            "umbral_aplicado": threshold
         }
-
+    
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error al obtener prediccion: {str(e)}")
-
+        raise HTTPException(status_code=500, detail=f"Error al obtener predicción: {str(e)}")
+    
 def check_mlflow():
     """Verifica si el MLflow Tracking Server está disponible."""
     try:

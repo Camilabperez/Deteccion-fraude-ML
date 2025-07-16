@@ -29,7 +29,8 @@ app.add_middleware(
 
 # Configurar directorio actual y logs
 current_directory = Path.cwd()
-logger.add("logs/producer.log", rotation="1 MB", retention="10 days", level="DEBUG") 
+log_path = current_directory / "logs" / "producer.log"
+logger.add(log_path, rotation="1 MB", retention="10 days", level="DEBUG")
 
 
 @app.get("/")

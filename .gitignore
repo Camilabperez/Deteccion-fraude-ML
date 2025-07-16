@@ -1,8 +1,10 @@
 # Ignorar todo por defecto
-viejo/__pycache__
-viejo
-logs/*
+obsoleto
+training/logs/*
+training/resultados/*
 __pycache__/
 **/__pycache__/
 .venv
+app/consumer/logs/*
+app/producer/logs/*
 # Permitir los directorios importantes !0/

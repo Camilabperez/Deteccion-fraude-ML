@@ -1,6 +1,0 @@
-2025-07-04 02:46:40.781 | INFO     | producer_service:generar_transacciones:89 - Transacciones enviadas.
-2025-07-04 02:46:40.782 | INFO     | producer_app:generar:55 - 10 transacciones generadas y enviadas a Kafka
-2025-07-04 02:47:11.867 | INFO     | producer_service:generar_transacciones:89 - Transacciones enviadas.
-2025-07-04 02:47:11.869 | INFO     | producer_app:generar:55 - 10 transacciones generadas y enviadas a Kafka
-2025-07-04 02:47:28.454 | INFO     | producer_service:generar_transacciones:89 - Transacciones enviadas.
-2025-07-04 02:47:28.456 | INFO     | producer_app:generar:55 - 10 transacciones generadas y enviadas a Kafka

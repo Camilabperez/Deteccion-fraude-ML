@@ -47,7 +47,7 @@ def clean_data(data):
 
     return data, X, Y
 
-def feature_engineering(data):
+def feature_engineering(data1):
     data1['gap'] = (data1['Timestamp1'] - data1['LastLogin']).dt.days.abs()
 
     X = data1.drop(['FraudIndicator','Timestamp','Timestamp1','LastLogin'],axis=1)

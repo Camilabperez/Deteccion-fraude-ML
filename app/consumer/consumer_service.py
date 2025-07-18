@@ -127,7 +127,7 @@ def get_prediction(data_df, model, threshold=0.5):
         # Obtener la probabilidad de la clase positiva (fraude = 1)
         proba = model.predict_proba(data_df)[0][1]
 
-        # Aplicar threshold personalizado
+        # Aplicar threshold 
         prediction = 1 if proba >= threshold else 0
         prediction_label = "fraudulento" if prediction == 1 else "no fraudulento"
 

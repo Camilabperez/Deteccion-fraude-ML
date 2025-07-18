@@ -14,4 +14,4 @@ COPY . .
 
 RUN mkdir -p logs
 
-CMD ["uvicorn", "consumer_app:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["sh", "-c", "python init_services.py && uvicorn consumer_app:app --host 0.0.0.0 --port 8080"]

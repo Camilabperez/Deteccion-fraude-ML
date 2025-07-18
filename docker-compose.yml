@@ -8,7 +8,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
     volumes:
-    - ./services/zookeeper:/var/lib/zookeeper
+      - zookeeper_data:/var/lib/zookeeper
 
   kafka:
     image: confluentinc/cp-kafka:7.5.0
@@ -24,7 +24,7 @@ services:
     depends_on:
       - zookeeper
     volumes:
-      - ./services/kafka:/var/lib/kafka
+       - kafka_data:/var/lib/kafka/data
   
   postgres:
     image: postgres:15
@@ -37,7 +37,7 @@ services:
       - "5432:5432"
     restart: always
     volumes:
-    - ./services/postgres:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
 
   grafana:
     image: grafana/grafana:latest
@@ -50,8 +50,9 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./services/grafana:/var/lib/grafana 
-      - ./services/grafana/conf/grafana.ini:/etc/grafana/grafana.ini:rw 
+      - ./services/grafana/provisioning/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+      - ./services/grafana/provisioning/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      - ./services/grafana/dashboards:/var/lib/grafana/dashboards
 
   mlflow:
     image: ghcr.io/mlflow/mlflow:latest
@@ -108,3 +109,6 @@ services:
 volumes:
   mlflow_data:
   mlflow_artifacts:
+  postgres_data:
+  kafka_data:
+  zookeeper_data:

@@ -21,18 +21,17 @@ TOPIC_NAME = os.getenv("TOPIC_NAME", "fraud_transactions")
 CREATE_TABLE_SQL = """
 CREATE TABLE IF NOT EXISTS transacciones (
     id SERIAL PRIMARY KEY,
-    usuario_id INT,
+    usuario_id VARCHAR(50),
     transaccion_id VARCHAR(50),
     FraudIndicator VARCHAR(50), 
-    Category INT,      
+    Category VARCHAR(50),     
     TransactionAmount DECIMAL(10,2), 
-    AnomalyScore DECIMAL(10,2), 
+    AnomalyScore DECIMAL(10,5), 
     Amount DECIMAL(10,2),        
     AccountBalance DECIMAL(15,2), 
-    SuspiciousFlag INT,
-    Hour INT,                    
-    gap DECIMAL(10,2),          
-    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+    SuspiciousFlag INT,       
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,        
+    timestamp_procesado TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
 );
 """
 

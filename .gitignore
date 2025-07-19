@@ -7,5 +7,5 @@ __pycache__/
 .venv
 app/consumer/logs/*
 app/producer/logs/*
-services/*
+
 # Permitir los directorios importantes !0/

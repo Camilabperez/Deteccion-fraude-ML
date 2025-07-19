@@ -12,6 +12,7 @@ from fastapi import HTTPException
 import mlflow
 import psycopg2
 import requests
+from datetime import datetime
 
 class KafkaConsumerService:
     """
@@ -56,7 +57,7 @@ class KafkaConsumerService:
 
                 if process_mnsg is None:
                     logger.warning("Transacción descartada.")
-                    return
+                    continue
                 
                 prediction_result = get_prediction(process_mnsg, self.model)
                 prediction = prediction_result.get("prediction", "N/A")
@@ -156,19 +157,19 @@ def save_to_postgres(result, mns):
     """Inserta una transacción procesada en la base de datos PostgreSQL."""
     try:
         mns_dict = json.loads(mns)
+        date = datetime.now()
 
         usuario_id = mns_dict.get("usuario_id", "N/A")
         transaccion_id = mns_dict.get("transaccion_id", "N/A")
         prediction_label = result.get("prediction", "N/A")
-        category = result.get("Category", ["N/A"])[0]
-        transaction_amount = result.get("TransactionAmount", ["N/A"])[0]
-        anomaly_score = result.get("AnomalyScore", ["N/A"])[0]
-        amount = result.get("Amount", ["N/A"])[0]
-        accountBalance = result.get("AccountBalance", ["N/A"])[0]
-        suspiciousFlag = result.get("SuspiciousFlag", ["N/A"])[0]
-        hour = result.get("Hour", ["N/A"])[0]
-        gap = result.get("gap", ["N/A"])[0]
+        category = mns_dict.get("Category", "N/A")
+        transaction_amount = result.get("TransactionAmount", "N/A")
+        anomaly_score = result.get("AnomalyScore", "N/A")
+        amount = result.get("Amount", "N/A")
+        accountBalance = result.get("AccountBalance", "N/A")
+        suspiciousFlag = result.get("SuspiciousFlag", "0")
         timestamp = mns_dict.get("fecha", "N/A")
+        timestamp_procesado = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
 
         conn = psycopg2.connect(
             dbname=os.getenv("POSTGRES_DB", "transactions_db"),
@@ -182,22 +183,21 @@ def save_to_postgres(result, mns):
         sql = """
             INSERT INTO transacciones (
                 usuario_id, transaccion_id, FraudIndicator, Category, TransactionAmount, AnomalyScore, Amount, 
-                AccountBalance, SuspiciousFlag, Hour, gap, fecha
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                AccountBalance, SuspiciousFlag, fecha, timestamp_procesado
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
         valores = (
             usuario_id,
             transaccion_id,
             prediction_label,
-            int(category),
+            category,
             float(transaction_amount),
             float(anomaly_score),
             float(amount),
             float(accountBalance),
             int(suspiciousFlag),
-            int(hour),
-            int(gap),
-            timestamp
+            timestamp,
+            timestamp_procesado
         )
 
         cur.execute(sql, valores)

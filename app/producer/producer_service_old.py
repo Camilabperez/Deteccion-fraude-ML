@@ -12,14 +12,14 @@ imagen Docker sea mucho más liviana.
 Script de entrenamiento: `training/train_ctgan.py`
 Ejecutar y mover el modelo a la carpeta `utils`
 """
-import os, json, warnings, uuid, random, time
+import os, json, warnings, uuid, joblib, time
 from confluent_kafka import Producer
 from loguru import logger
 from pathlib import Path
+import pandas as pd
 from kafka import KafkaAdminClient
 from kafka.errors import KafkaError
 from datetime import datetime
-from faker import Faker
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 
@@ -61,7 +61,15 @@ def kafka_esta_disponible(broker_url: str, intentos=3, espera=2):
 
 def generar_transacciones(logger, base_path: Path, num_transacciones: int = 8) -> int:
     """
-    Genera transacciones sintéticas (sin CTGAN) y las envía a un tópico Kafka.
+    Genera transacciones sintéticas utilizando un modelo CTGAN y las envía a un tópico Kafka.
+
+    Args:
+        logger (loguru.Logger): Instancia del logger para imprimir mensajes.
+        base_path (Path): Ruta base donde se encuentra el modelo y los datos.
+        num_transacciones (int): Cantidad de transacciones a generar.
+
+    Returns:
+        int: Número de transacciones generadas y enviadas.
     """
     broker = os.getenv("KAFKA_BROKER", "kafka:9092")
     conf = {'bootstrap.servers': broker}
@@ -71,33 +79,24 @@ def generar_transacciones(logger, base_path: Path, num_transacciones: int = 8) -
         logger.error("Kafka no está disponible")
         return 0
 
-    fake = Faker("es_AR")
-    categorias = ["Other", "Online", "Travel", "Food", "Retail"]
-    date = datetime.now()
+    X = pd.read_csv(base_path / 'utils/data.csv')
 
-    transacciones = []
-    for _ in range(num_transacciones):
-        transaccion = {
-            "usuario_id": str(uuid.uuid4()),
-            "transaccion_id": str(uuid.uuid4()),
-            "fecha": date.strftime("%Y-%m-%d %H:%M:%S"),
-            "Category": random.choice(categorias),
-            "TransactionAmount": round(random.uniform(10, 100), 2),
-            "AnomalyScore": round(random.uniform(0, 1), 5),
-            "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "Amount": round(random.uniform(10, 100), 2),
-            "AccountBalance": round(random.uniform(1000, 10000), 2),
-            "LastLogin": fake.date_between(start_date="-2y", end_date="today").strftime("%Y-%m-%d"),
-            "SuspiciousFlag": random.choices([0, 1], weights=[95, 5])[0], 
-        }
-        transacciones.append(transaccion)
+    ctgan_model_path = base_path / 'utils/ctgan_model.pkl'
+    ctgan = joblib.load(ctgan_model_path)
+    synthetic_data = ctgan.sample(num_rows=num_transacciones)
 
-    for t in transacciones:
-        message_json = json.dumps(t)
+    for _, row in synthetic_data.iterrows():
+        message_dict = row.to_dict()
+        message_dict["usuario_id"] = str(uuid.uuid4())
+        message_dict["transaccion_id"] = str(uuid.uuid4())
+        date = datetime.now()
+        message_dict["fecha"] = date.strftime("%Y-%m-%d %H:%M:%S")
+        message_json = json.dumps(message_dict)
+
         try:
             producer.produce(
                 topic="fraud_transactions",
-                key=t["usuario_id"],
+                key=str(message_dict.get("usuario_id", "none")),
                 value=message_json
             )
             producer.poll(0)
@@ -106,4 +105,4 @@ def generar_transacciones(logger, base_path: Path, num_transacciones: int = 8) -
 
     producer.flush()
     logger.info("Transacciones enviadas.")
-    return len(transacciones)
+    return len(synthetic_data)

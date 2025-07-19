@@ -50,9 +50,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./services/grafana/provisioning/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
-      - ./services/grafana/provisioning/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
-      - ./services/grafana/dashboards:/var/lib/grafana/dashboards
+      - ./services/postgres:/var/lib/postgresql/data
 
   mlflow:
     image: ghcr.io/mlflow/mlflow:latest

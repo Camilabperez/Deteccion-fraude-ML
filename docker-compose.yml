@@ -47,10 +47,17 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_NAME=Main Org.
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+      - GF_SECURITY_ALLOW_EMBEDDING=true 
     depends_on:
       - postgres
     volumes:
-      - ./services/postgres:/var/lib/postgresql/data
+      - ./services/grafana/dashboards:/var/lib/grafana/dashboards
+      - ./services/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./services/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+
 
   mlflow:
     image: ghcr.io/mlflow/mlflow:latest
@@ -98,13 +105,14 @@ services:
     environment:
       - KAFKA_BROKER=kafka:9092
       - POSTGRES_HOST=postgres
-      - PPOSTGRES_PORT=5432
+      - POSTGRES_PORT=5432
       - POSTGRES_DB=transactions_db
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
 
 
 volumes:
+  grafana-storage:
   mlflow_data:
   mlflow_artifacts:
   postgres_data:

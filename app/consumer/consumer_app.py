@@ -12,8 +12,13 @@ from consumer_service import KafkaConsumerService, check_postgres, check_mlflow,
 import os
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import PlainTextResponse
+from fastapi.staticfiles import StaticFiles
+
+# Inicializar FastAPI
+app = FastAPI()
 
 # Configuración de templates
+app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 # Inicializar servicio del consumidor
@@ -21,9 +26,6 @@ consumer_service = KafkaConsumerService(
     topic="fraud_transactions",
     kafka_broker=os.getenv("KAFKA_BROKER", "kafka:9092")
 )
-
-# Inicializar FastAPI
-app = FastAPI()
 
 # Configuración de CORS
 app.add_middleware(
@@ -59,7 +61,7 @@ def root(request: Request):
     grafana_status = check_grafana()
     fastapi_status = check_fastapi_health()
     kafka_status = consumer_service.check_kafka()
-    return templates.TemplateResponse("status.html", {
+    return templates.TemplateResponse("index.html", {
         "request": request,
         "db_status": db_status,
         "kafka_status": kafka_status,
@@ -67,6 +69,10 @@ def root(request: Request):
         "grafana_status": grafana_status,
         "fastapi_status": fastapi_status
     })
+
+@app.get("/admin/panel", response_class=HTMLResponse)
+def panel(request: Request):
+    return templates.TemplateResponse("panel.html", {"request": request})
 
 
 @app.get("/start")

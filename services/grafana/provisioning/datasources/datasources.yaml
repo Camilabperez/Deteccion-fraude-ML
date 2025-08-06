@@ -1,0 +1,16 @@
+apiVersion: 1
+
+datasources:
+  - name: grafana-postgresql-datasource
+    type: postgres
+    uid: postgres_ds
+    access: proxy
+    url: postgresbd:5432
+    user: user
+    database: transactions_db
+    isDefault: true
+    editable: true
+    jsonData:
+      sslmode: disable
+    secureJsonData:
+      password: password

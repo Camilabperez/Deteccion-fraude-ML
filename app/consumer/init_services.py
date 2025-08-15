@@ -63,7 +63,7 @@ def crear_topico_kafka():
             logger.info(f"Tópico '{TOPIC_NAME}' creado.")
             break
         except TopicAlreadyExistsError:
-            logger.info(f"Tópico '{TOPIC_NAME}' existennte.")
+            logger.info(f"Tópico '{TOPIC_NAME}' existente.")
             break
         except Exception as e:
             logger.error(f"Esperando Kafka... Error: {e}")

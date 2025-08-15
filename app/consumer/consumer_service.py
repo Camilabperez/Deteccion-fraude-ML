@@ -169,7 +169,7 @@ def save_to_postgres(result, mns):
         accountBalance = result.get("AccountBalance", "N/A")
         suspiciousFlag = result.get("SuspiciousFlag", "0")
         timestamp = mns_dict.get("fecha", "N/A")
-        timestamp_procesado = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        timestamp_procesado = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         conn = psycopg2.connect(
             dbname=os.getenv("POSTGRES_DB", "transactions_db"),

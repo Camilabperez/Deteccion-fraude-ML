@@ -26,6 +26,7 @@
         "type": "grafana-postgresql-datasource",
         "uid": "postgres_ds"
       },
+      "description": "Cantidad total de registros recibidos por el sistema",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -95,7 +96,7 @@
           "table": "transacciones"
         }
       ],
-      "title": "Total de transacciones procesadas",
+      "title": "Transacciones procesadas (total)",
       "type": "stat"
     },
     {
@@ -103,6 +104,7 @@
         "type": "grafana-postgresql-datasource",
         "uid": "postgres_ds"
       },
+      "description": "Muestra el número de transacciones detectadas en el período seleccionado",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -172,7 +174,7 @@
           "table": "transacciones"
         }
       ],
-      "title": "Transacciones procesadas en el periodo",
+      "title": "Procesadas en el período seleccionado",
       "type": "stat"
     },
     {
@@ -180,6 +182,7 @@
         "type": "grafana-postgresql-datasource",
         "uid": "postgres_ds"
       },
+      "description": "Evolución de las transacciones procesadas, diferenciadas por clasificación.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -189,8 +192,9 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
+            "axisGridShow": true,
+            "axisLabel": "Cantidad de transacciones",
+            "axisPlacement": "left",
             "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
@@ -234,7 +238,7 @@
         "barWidth": 0.83,
         "colorByField": "tipo",
         "fullHighlight": false,
-        "groupWidth": 0.62,
+        "groupWidth": 0.7,
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -340,6 +344,7 @@
         "type": "grafana-postgresql-datasource",
         "uid": "postgres_ds"
       },
+      "description": "Comparación entre transacciones detectadas como fraudulentas y no fraudulentas.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -364,6 +369,9 @@
       },
       "id": 2,
       "options": {
+        "displayLabels": [
+          "value"
+        ],
         "legend": {
           "displayMode": "list",
           "placement": "bottom",
@@ -439,7 +447,7 @@
           }
         }
       ],
-      "title": "Porcentaje total de predicciones",
+      "title": "Distribución de predicciones del modelo",
       "type": "piechart"
     },
     {
@@ -447,6 +455,7 @@
         "type": "grafana-postgresql-datasource",
         "uid": "postgres_ds"
       },
+      "description": "Comparación entre transacciones detectadas como fraudulentas y no fraudulentas en el periodo seleccionado",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -525,7 +534,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  FraudIndicator as label,\r\n  COUNT(*) as \"transacciones fraudulentas\"\r\nFROM transacciones\r\nWHERE fraudindicator = 'fraudulento'\r\nGROUP BY FraudIndicator",
+          "rawSql": "SELECT\r\n  FraudIndicator as label,\r\n  COUNT(*) as \"transacciones fraudulentas\"\r\nFROM transacciones\r\nWHERE fraudindicator = 'fraudulento' AND $__timeFilter(Fecha)\r\nGROUP BY FraudIndicator",
           "refId": "B",
           "sql": {
             "columns": [
@@ -554,131 +563,7 @@
         "type": "grafana-postgresql-datasource",
         "uid": "postgres_ds"
       },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 10,
-        "x": 0,
-        "y": 8
-      },
-      "id": 3,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.0.1",
-      "targets": [
-        {
-          "editorMode": "code",
-          "format": "table",
-          "rawQuery": true,
-          "rawSql": "SELECT transactionamount as \"Monto de transaccion\"\r\nFROM transacciones \r\nWHERE\r\n  $__timeFilter(Fecha)",
-          "refId": "A",
-          "sql": {
-            "columns": [
-              {
-                "parameters": [
-                  {
-                    "name": "transactionamount",
-                    "type": "functionParameter"
-                  }
-                ],
-                "type": "function"
-              }
-            ],
-            "groupBy": [
-              {
-                "property": {
-                  "type": "string"
-                },
-                "type": "groupBy"
-              }
-            ],
-            "limit": 50
-          },
-          "table": "transacciones"
-        },
-        {
-          "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "postgres_ds"
-          },
-          "editorMode": "code",
-          "format": "table",
-          "hide": false,
-          "rawQuery": true,
-          "rawSql": "SELECT transactionamount as \"Monto de transacciones frauduentas\"\r\nFROM transacciones \r\nWHERE fraudindicator = 'fraudulento'",
-          "refId": "B",
-          "sql": {
-            "columns": [
-              {
-                "parameters": [],
-                "type": "function"
-              }
-            ],
-            "groupBy": [
-              {
-                "property": {
-                  "type": "string"
-                },
-                "type": "groupBy"
-              }
-            ],
-            "limit": 50
-          }
-        }
-      ],
-      "title": "Distribuición montos de transacciones",
-      "type": "histogram"
-    },
-    {
-      "datasource": {
-        "type": "grafana-postgresql-datasource",
-        "uid": "postgres_ds"
-      },
+      "description": "Listado con información detallada de cada transacción procesada.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -687,37 +572,31 @@
           "custom": {
             "align": "auto",
             "cellOptions": {
-              "type": "auto"
+              "type": "color-text"
             },
             "inspect": false
           },
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "fraudulento": {
+                  "color": "dark-red",
+                  "index": 0
+                }
+              },
+              "type": "value"
+            }
+          ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
+                "color": "text"
               }
             ]
           }
         },
         "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "usuario_id"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 94
-              }
-            ]
-          },
           {
             "matcher": {
               "id": "byName",
@@ -873,13 +752,25 @@
                 "value": 125
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Indicador de fraude"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 154
+              }
+            ]
           }
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 14,
-        "x": 10,
+        "h": 7,
+        "w": 24,
+        "x": 0,
         "y": 8
       },
       "id": 4,
@@ -1028,7 +919,7 @@
           "table": "transacciones"
         }
       ],
-      "title": "Panel Title",
+      "title": "Detalle de transacciones",
       "type": "table"
     }
   ],
@@ -1047,5 +938,5 @@
   "timezone": "browser",
   "title": "Transacciones bancarias",
   "uid": "bejbbm1isv20wf",
-  "version": 1
+  "version": 3
 }

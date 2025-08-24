@@ -10,7 +10,7 @@ import numpy as np
 from loguru import logger
 import joblib, os, json
 
-def get_clean_data(mns):
+def preprocesar_datos(mns):
     """
     Limpia y transforma un mensaje JSON en un DataFrame con features listas para inferencia.
 
@@ -27,7 +27,6 @@ def get_clean_data(mns):
         data['fecha'] = pd.to_datetime(data['fecha'])
         data['LastLogin'] = pd.to_datetime(data['LastLogin'])
 
-        data = data.drop(['transaccion_id', 'usuario_id'], axis=1)
         data['Hour'] = data['fecha'].dt.hour
 
         data['gap'] = (data['fecha'] - data['LastLogin']).dt.days.abs()
@@ -42,7 +41,7 @@ def get_clean_data(mns):
         data['BalancePostTransaction'] = data['AccountBalance'] - data['TransactionAmount']
         data['IsWeekend'] = data['DayOfWeek'].isin([5, 6]).astype(int)
 
-        data = data.drop(['fecha','LastLogin'],axis=1)
+        data = data.drop(['transaccion_id', 'usuario_id','fecha','LastLogin','Name','Address','Age'],axis=1)
 
         data = codificar_categoria(data)
 

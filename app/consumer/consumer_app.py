@@ -8,11 +8,18 @@ verificar el estado de los servicios relacionados y mostrar o limpiar logs.
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from consumer_service import KafkaConsumerService, check_postgres, check_mlflow, check_grafana, check_fastapi_health
+from kafka_consumer import KafkaConsumerService
+from service.db import check_postgres
+from service.model import check_mlflow
+from service.api import check_fastapi_health
+from service.dashboard import check_grafana
 import os
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import PlainTextResponse
 from fastapi.staticfiles import StaticFiles
+from loguru import logger
+from service.estado_alerta import alert_state
+from pydantic import BaseModel
 
 # Inicializar FastAPI
 app = FastAPI()
@@ -36,6 +43,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+logger.add("logs/consumer.log", rotation="1 MB", retention="10 days", level="DEBUG")
 
 @app.get("/")
 def root():
@@ -124,3 +132,23 @@ def limpiar_logs():
         return {"message": "Logs limpiados correctamente"}
     except Exception as e:
         return {"message": f"Error al limpiar logs: {e}"}
+    
+
+class AlertsPayload(BaseModel):
+    enabled: bool
+
+@app.get("/alerts/state")
+def get_alerts_state():
+    return {"enabled": alert_state.is_enabled()}
+
+@app.post("/alerts/enable")
+def enable_alerts():
+    alert_state.set_enabled(True)
+    logger.info("Alertas habilitadas desde API")
+    return {"enabled": True}
+
+@app.post("/alerts/disable")
+def disable_alerts():
+    alert_state.set_enabled(False)
+    logger.info("Alertas deshabilitadas desde API")
+    return {"enabled": False}

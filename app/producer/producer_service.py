@@ -1,71 +1,57 @@
-"""
-Generación de datos sintéticos con modelo CTGAN entrenado previamente
-
-Este script utiliza un modelo CTGAN entrenado previamente para generar 
-transacciones sintéticas y enviarlas a un tópico Kafka.
-
-# Entrenamiento previo:
-El modelo CTGAN se entrena localmente con SDV y luego se serializa usando joblib.
-Esto permite excluir la librería SDV del entorno de producción, haciendo que la 
-imagen Docker sea mucho más liviana.
-
-Script de entrenamiento: `training/train_ctgan.py`
-Ejecutar y mover el modelo a la carpeta `utils`
-"""
 import os, json, warnings, uuid, random, time
-from confluent_kafka import Producer
-from loguru import logger
 from pathlib import Path
-from kafka import KafkaAdminClient
-from kafka.errors import KafkaError
 from datetime import datetime
+from loguru import logger
 from faker import Faker
+from confluent_kafka import Producer
+from confluent_kafka.admin import AdminClient  
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
-
 def delivery_report(err, msg):
-    """
-    Callback utilizado por el productor de Kafka para reportar el resultado de la entrega de un mensaje.
-
-    Args:
-        err (KafkaError or None): Error si ocurrió alguno al enviar el mensaje.
-        msg (Message): Mensaje enviado a Kafka.
-    """
+    """Callback de entrega."""
     if err is not None:
         logger.error(f"Mensaje fallido: {err}")
     else:
-        logger.success(f"Mensaje enviado a {msg.topic()}")
-        logger.info(f"Transaccion: {msg.value()}")
+        logger.success(f"Mensaje enviado a {msg.topic()} [{msg.partition()}] off={msg.offset()}")
+        try:
+            logger.debug(f"Transacción: {msg.value().decode('utf-8')}")
+        except Exception:
+            pass
 
-def kafka_esta_disponible(broker_url: str, intentos=3, espera=2):
-    """
-    Verifica si el broker de Kafka está disponible.
 
-    Args:
-        broker_url (str): Dirección del broker de Kafka (ej. 'kafka:9092').
-        intentos (int): Número de intentos antes de rendirse.
-        espera (int): Tiempo de espera entre intentos en segundos.
-
-    Returns:
-        bool: True si el broker responde correctamente, False en caso contrario.
-    """
+def kafka_esta_disponible(broker_url: str, intentos=3, espera=2) -> bool:
+    """Chequea disponibilidad usando AdminClient de confluent_kafka."""
     for i in range(intentos):
         try:
-            admin = KafkaAdminClient(bootstrap_servers=broker_url)
-            admin.list_topics() 
-            return True
-        except KafkaError as e:
+            admin = AdminClient({"bootstrap.servers": broker_url})
+            md = admin.list_topics(timeout=5) # pedir metadata; si responde, está ok
+            if md.topics is not None:
+                return True
+        except Exception as e:
             logger.info(f"Kafka no disponible - {broker_url} - Intento {i+1}/{intentos}: {e}")
             time.sleep(espera)
     return False
 
-def generar_transacciones(logger, base_path: Path, num_transacciones: int = 8) -> int:
+
+def _to_bytes(obj) -> bytes:
+    """Serializa a bytes utf-8 (dict→JSON, str→utf-8, int→str→utf-8)."""
+    if isinstance(obj, (bytes, bytearray)):
+        return bytes(obj)
+    if isinstance(obj, str):
+        return obj.encode("utf-8")
+    return json.dumps(obj, ensure_ascii=False).encode("utf-8")
+
+
+def generar_transacciones(num_transacciones: int = 8) -> int:
     """
-    Genera transacciones sintéticas (sin CTGAN) y las envía a un tópico Kafka.
+    Genera transacciones sintéticas y las envía a Kafka.
+    Devuelve la cantidad enviadas (len).
     """
     broker = os.getenv("KAFKA_BROKER", "kafka:9092")
-    conf = {'bootstrap.servers': broker}
-    producer = Producer(**conf)
+    topic = os.getenv("KAFKA_TOPIC", "fraud_transactions")
+
+    conf = {"bootstrap.servers": broker}
+    producer = Producer(conf)
 
     if not kafka_esta_disponible(broker):
         logger.error("Kafka no está disponible")
@@ -73,14 +59,14 @@ def generar_transacciones(logger, base_path: Path, num_transacciones: int = 8) -
 
     fake = Faker("es_AR")
     categorias = ["Other", "Online", "Travel", "Food", "Retail"]
-    date = datetime.now()
+    now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     transacciones = []
     for _ in range(num_transacciones):
-        transaccion = {
-            "usuario_id": str(uuid.uuid4()),
+        t = {
+            "usuario_id": random.randint(1, 100),            # entero aleatorio 1..100
             "transaccion_id": str(uuid.uuid4()),
-            "fecha": date.strftime("%Y-%m-%d %H:%M:%S"),
+            "fecha": now_str,                                 # fija por batch (si querés, move adentro)
             "Category": random.choice(categorias),
             "TransactionAmount": round(random.uniform(10, 100), 2),
             "AnomalyScore": round(random.uniform(0, 1), 5),
@@ -88,22 +74,37 @@ def generar_transacciones(logger, base_path: Path, num_transacciones: int = 8) -
             "Amount": round(random.uniform(10, 100), 2),
             "AccountBalance": round(random.uniform(1000, 10000), 2),
             "LastLogin": fake.date_between(start_date="-2y", end_date="today").strftime("%Y-%m-%d"),
-            "SuspiciousFlag": random.choices([0, 1], weights=[95, 5])[0], 
+            "SuspiciousFlag": random.choices([0, 1], weights=[95, 5])[0],
+            "Name": fake.name(),
+            "Address": fake.address().replace("\n", ", "),    # normalizo a una línea
+            "Age": random.randint(18, 80),
         }
-        transacciones.append(transaccion)
+        transacciones.append(t)
 
     for t in transacciones:
-        message_json = json.dumps(t)
         try:
             producer.produce(
-                topic="fraud_transactions",
-                key=t["usuario_id"],
-                value=message_json
+                topic=topic,
+                key=_to_bytes(str(t.get("usuario_id", ""))),       
+                value=_to_bytes(t),                                  
+                on_delivery=delivery_report
             )
+            # vacía el buffer de eventos internos (llama callbacks)
             producer.poll(0)
+        except BufferError as e:
+            # si el buffer está lleno, esperá y reintenta
+            logger.warning(f"Buffer lleno, esperando: {e}")
+            producer.poll(1.0)
+            producer.produce(
+                topic=topic,
+                key=_to_bytes(str(t.get("usuario_id", ""))),
+                value=_to_bytes(t),
+                on_delivery=delivery_report
+            )
         except Exception as e:
             logger.exception(f"Error enviando mensaje: {e}")
 
-    producer.flush()
+    # Esperar a que se envíe todo
+    producer.flush(timeout=10.0)
     logger.info("Transacciones enviadas.")
     return len(transacciones)

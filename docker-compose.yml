@@ -102,6 +102,7 @@ services:
       - mlflow
     volumes:
       - ./app/consumer:/app
+    env_file: ./app/consumer/.env 
     environment:
       - KAFKA_BROKER=kafka:9092
       - POSTGRES_HOST=postgres

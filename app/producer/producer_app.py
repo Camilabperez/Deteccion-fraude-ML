@@ -52,7 +52,7 @@ def generar(cantidad: int):
     Returns:
         JSONResponse: Mensaje con la cantidad generada.
     """
-    count = generar_transacciones(logger, current_directory, cantidad)
+    count = generar_transacciones(cantidad)
     logger.info(f"{count} transacciones generadas y enviadas a Kafka")
     return JSONResponse(content={"message": f"{count} transacciones generadas y enviadas a Kafka"})
 

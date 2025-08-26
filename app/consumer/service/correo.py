@@ -46,17 +46,12 @@ def _build_html(tx: Dict[str, Any]) -> str:
     Arma el HTML del correo usando los campos típicos.
     Si faltan, se muestran como 'N/D'.
     """
-    try:
-        
-        usuario_id       = tx.get("usuario_id", "N/A") 
-        transaccion_id   = tx.get("transaccion_id", "N/D")
-        categoria        = tx.get("Category", tx.get("categoria", "N/D"))
-        amount           = tx.get("TransactionAmount", tx.get("Amount"))
-        amount_txt       = _format_money(amount)
-        fecha            = tx.get("fecha", "N/D")
-
-    except Exception as e:  
-        logger.error(f"Error creANDO correo : {e}")
+    usuario_id       = tx.get("usuario_id", "N/A") 
+    transaccion_id   = tx.get("transaccion_id", "N/D")
+    categoria        = tx.get("Category", tx.get("categoria", "N/D"))
+    amount           = tx.get("TransactionAmount", tx.get("Amount"))
+    amount_txt       = _format_money(amount)
+    fecha            = tx.get("fecha", "N/D")
 
     return f"""
     <html><body>

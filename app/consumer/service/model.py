@@ -1,14 +1,15 @@
 from loguru import logger
 from fastapi import HTTPException
 import mlflow
-import requests
+import requests, os
 
 ############# MLFLOW #############
 def loadmodel():
     """Carga un modelo registrado desde el MLflow Tracking Server."""
     try:
-        mlflow.set_tracking_uri("http://mlflow:8080")  
-        model_path = "./model/logistic_regression_model" 
+        tracking_uri = os.getenv("MLFLOW_TRACKING_URI", "http://mlflow:5000")
+        mlflow.set_tracking_uri(tracking_uri)
+        model_path = "./model/logistic_regression_model"
         model = mlflow.sklearn.load_model(model_path)
         logger.success("loadmodel: Modelo cargado correctamente desde MLflow Tracking Server.")
         return model
@@ -31,7 +32,7 @@ def get_prediction(data_df, model, threshold=0.5):
         prediction_label = "fraudulento" if prediction == 1 else "no fraudulento"
 
         return {
-            **data_df.to_dict(orient="records")[0],  # Convierte a dict plano
+            **data_df.to_dict(orient="records")[0], 
             "prediction": prediction_label,
             "probabilidad_fraude": round(proba, 4),
             "umbral_aplicado": threshold

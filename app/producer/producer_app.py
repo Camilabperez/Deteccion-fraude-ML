@@ -2,7 +2,8 @@
 Producer API - Generador de transacciones sintéticas
 
 Este módulo define un servidor FastAPI que actúa como productor de datos para un sistema de detección de fraude.
-Permite generar transacciones artificiales usando un modelo de síntesis (CTGAN) y enviarlas a un tópico de Kafka.
+Genera transacciones artificiales de forma aleatoria utilizando Faker y las envía a un tópico de Kafka.
+En futuras versiones podría integrarse un modelo de síntesis como CTGAN para obtener datos más realistas.
 """
 
 from fastapi import FastAPI

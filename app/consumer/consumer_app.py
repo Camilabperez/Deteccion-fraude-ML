@@ -37,13 +37,12 @@ consumer_service = KafkaConsumerService(
 # Configuración de CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-logger.add("logs/consumer.log", rotation="1 MB", retention="10 days", level="DEBUG")
 
 @app.get("/")
 def root():
@@ -52,11 +51,13 @@ def root():
     Returns:
         dict: Mensaje de bienvenida.
     """
-    return {"message": "Consumer activo. Usá /admin para ver estado de servicios."}
+    return {"message":
+            "Consumer activo. Usá /admin para ver estado de servicios."}
+
 
 # Ruta para la página de estado
 @app.get("/admin", response_class=HTMLResponse)
-def root(request: Request):
+def admin(request: Request):
     """Renderiza la vista de estado de servicios externos.
 
     Args:
@@ -78,6 +79,7 @@ def root(request: Request):
         "fastapi_status": fastapi_status
     })
 
+
 @app.get("/admin/panel", response_class=HTMLResponse)
 def panel(request: Request):
     return templates.TemplateResponse("panel.html", {"request": request})
@@ -88,7 +90,8 @@ def start():
     """Inicia el consumidor de Kafka.
 
     Returns:
-        dict: Mensaje indicando si se inició el consumo correctamente o si ya estaba activo.
+        dict: Mensaje indicando si se inició el consumo correctamente o si ya
+        estaba activo.
     """
     return consumer_service.start()
 
@@ -98,7 +101,8 @@ def stop():
     """Detiene el consumidor de Kafka.
 
     Returns:
-        dict: Mensaje indicando si se detuvo correctamente o si ya estaba inactivo.
+        dict: Mensaje indicando si se detuvo correctamente o si ya
+        estaba inactivo.
     """
     return consumer_service.stop()
 
@@ -110,10 +114,10 @@ def get_logs():
     Returns:
         str: Contenido del log o mensaje de error si el archivo no existe.
     """
-    log_path = "logs/consumer.log"  
+    log_path = "logs/consumer.log"
     if not os.path.exists(log_path):
         return "El archivo de log no existe."
-    
+
     with open(log_path, "r", encoding="utf-8") as f:
         log_content = f.read()
     return log_content
@@ -124,28 +128,32 @@ def limpiar_logs():
     """Limpia el archivo de logs del consumidor.
 
     Returns:
-        dict: Mensaje indicando si la operación fue exitosa o si ocurrió un error.
+        dict: Mensaje indicando si la operación fue exitosa o si
+        ocurrió un error.
     """
-    log_path = "logs/consumer.log" 
+    log_path = "logs/consumer.log"
     try:
-        open(log_path, "w").close()   
+        open(log_path, "w").close()
         return {"message": "Logs limpiados correctamente"}
     except Exception as e:
         return {"message": f"Error al limpiar logs: {e}"}
-    
+
 
 class AlertsPayload(BaseModel):
     enabled: bool
 
+
 @app.get("/alerts/state")
 def get_alerts_state():
     return {"enabled": alert_state.is_enabled()}
+
 
 @app.post("/alerts/enable")
 def enable_alerts():
     alert_state.set_enabled(True)
     logger.info("Alertas habilitadas desde API")
     return {"enabled": True}
+
 
 @app.post("/alerts/disable")
 def disable_alerts():

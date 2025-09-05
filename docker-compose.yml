@@ -76,8 +76,9 @@ services:
       - "5000" 
       - "--backend-store-uri"
       - "sqlite:////mlflow_backend/mlflow.db" 
-      - "--default-artifact-root"
-      - "file:///mlruns" 
+      - "--artifacts-destination"
+      - "/mlruns"              # dónde guarda físicamente
+      - "--serve-artifacts"    # ¡IMPORTANTE!
 
   producer:
     container_name: producer

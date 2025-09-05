@@ -21,10 +21,10 @@ metadata.detect_from_dataframe(df)
 metadata.save_to_json(base_path / "data_metadata.json")
 
 # 3. Entrenar modelo CTGAN
-model = CTGANSynthesizer(metadata, enforce_rounding=False, epochs=20, verbose=True)
+model = CTGANSynthesizer(metadata, enforce_rounding=False, epochs=20)
 model.fit(df)
 
 # 4. Guardar el modelo entrenado
 joblib.dump(model, base_path / "ctgan_model.pkl")
 
-print("Modelo CTGAN entrenado y guardado exitosamente en: utils/ctgan_model.pkl")
+print("Modelo CTGAN entrenado y guardado en: utils/ctgan_model.pkl")

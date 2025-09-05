@@ -17,7 +17,6 @@ import smtplib
 import ssl
 from email.mime.text import MIMEText
 from typing import Any, Dict, Optional
-from loguru import logger
 
 provider = os.getenv("EMAIL_PROVIDER", "smtp").lower()
 host = os.getenv("SMTP_HOST")
@@ -46,25 +45,27 @@ def _build_html(tx: Dict[str, Any]) -> str:
     Arma el HTML del correo usando los campos típicos.
     Si faltan, se muestran como 'N/D'.
     """
-    usuario_id       = tx.get("usuario_id", "N/A") 
-    transaccion_id   = tx.get("transaccion_id", "N/D")
-    categoria        = tx.get("Category", tx.get("categoria", "N/D"))
-    amount           = tx.get("TransactionAmount", tx.get("Amount"))
-    amount_txt       = _format_money(amount)
-    fecha            = tx.get("fecha", "N/D")
+    usuario_id = tx.get("CustomerID", "N/A")
+    transaccion_id = tx.get("TransactionID", "N/D")
+    categoria = tx.get("Category", tx.get("categoria", "N/D"))
+    amount = tx.get("TransactionAmount", tx.get("Amount"))
+    amount_txt = _format_money(amount)
+    fecha = tx.get("fecha", "N/D")
 
     return f"""
     <html><body>
       <h2>¿Reconoces esta operación?</h2>
       <p> Se detectó una transacción sospechosa asociada a tu cuenta.</p>
-      <table border="0" cellspacing="0" cellpadding="6" style="font-family:Arial,Helvetica,sans-serif;">
+      <table border="0" cellspacing="0" cellpadding="6"
+      style="font-family:Arial,Helvetica,sans-serif;">
         <tr><td><b>Usuario</b></td><td>{usuario_id}</td></tr>
         <tr><td><b>ID Transacción</b></td><td>{transaccion_id}</td></tr>
         <tr><td><b>Categoría</b></td><td>{categoria}</td></tr>
         <tr><td><b>Monto</b></td><td>{amount_txt}</td></tr>
         <tr><td><b>Fecha</b></td><td>{fecha}</td></tr>
       </table>
-      <p> Si no reconocés esta operación, comunicate de inmediato con soporte.</p>
+      <p> Si no reconocés esta operación, comunicate de inmediato con soporte.
+      </p>
       <hr/>
       <small> Este es un mensaje automático, por favor no responder.</small>
     </body></html>
@@ -87,11 +88,12 @@ def _send_smtp(to_email: str, subject: str, html_body: str) -> None:
         server.sendmail(from_addr, [to_email], msg.as_string())
 
 
-def send_alert_email(to_email: str, tx: Dict[str, Any], subject: Optional[str] = None) -> None:
+def send_alert_email(to_email: str, tx: Dict[str, Any],
+                     subject: Optional[str] = None) -> None:
     """
     Envía un correo de alerta de fraude.
     """
-    _subject = subject or f"Alerta de seguridad"
+    _subject = subject or "Alerta de seguridad"
 
     html = _build_html(tx)
 

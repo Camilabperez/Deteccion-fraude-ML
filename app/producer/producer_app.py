@@ -1,14 +1,14 @@
 """
 Producer API - Generador de transacciones sintéticas
 
-Este módulo define un servidor FastAPI que actúa como productor de datos para un sistema de detección de fraude.
-Genera transacciones artificiales de forma aleatoria utilizando Faker y las envía a un tópico de Kafka.
-En futuras versiones podría integrarse un modelo de síntesis como CTGAN para obtener datos más realistas.
+Este módulo define un servidor FastAPI que actúa como productor de datos para
+un sistema de detección de fraude. Genera transacciones artificiales de forma
+aleatoria utilizando Faker y las envía a un tópico de Kafka.
 """
 
 from fastapi import FastAPI
 from pathlib import Path
-from producer_service  import generar_transacciones  
+from producer_service import generar_transacciones
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import PlainTextResponse
 import os
@@ -22,7 +22,7 @@ app = FastAPI()
 # Configuración de CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], 
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -41,7 +41,11 @@ def root():
     Returns:
         dict: Mensaje de bienvenida.
     """
-    return {"message": "Producer activo. Usá /generar para enviar transacciones."}
+    return {
+        "message": (
+            "Producer activo. Usá /generar para enviar transacciones."
+        )
+    }
 
 
 @app.post("/generar/{cantidad}")
@@ -52,10 +56,12 @@ def generar(cantidad: int):
         cantidad (int): Número de transacciones a generar.
     Returns:
         JSONResponse: Mensaje con la cantidad generada.
+        El mensaje indica cuántas transacciones fueron generadas y enviadas.
     """
     count = generar_transacciones(cantidad)
     logger.info(f"{count} transacciones generadas y enviadas a Kafka")
-    return JSONResponse(content={"message": f"{count} transacciones generadas y enviadas a Kafka"})
+    mns = f"{count} transacciones generadas y enviadas a Kafka"
+    return JSONResponse(content={"message": mns})
 
 
 @app.get("/logs", response_class=PlainTextResponse)
@@ -65,10 +71,9 @@ def get_logs():
     Returns:
         str: Contenido del archivo de log o mensaje si no existe.
     """
-    log_path = "logs/producer.log"  
+    log_path = "logs/producer.log"
     if not os.path.exists(log_path):
         return "El archivo de log no existe."
-    
     with open(log_path, "r", encoding="utf-8") as f:
         log_content = f.read()
     return log_content
@@ -79,11 +84,11 @@ def limpiar_logs():
     """Limpia el contenido del archivo de logs del productor.
 
     Returns:
-        dict: Mensaje indicando si la operación fue exitosa o si ocurrió un error.
+        dict: Mensaje indicando si la operación fue exitosa o si no
     """
-    log_path = "logs/producer.log" 
+    log_path = "logs/producer.log"
     try:
-        open(log_path, "w").close()   
+        open(log_path, "w").close()
         return {"message": "Logs limpiados correctamente"}
     except Exception as e:
         return {"message": f"Error al limpiar logs: {e}"}

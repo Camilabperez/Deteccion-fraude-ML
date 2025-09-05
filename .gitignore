@@ -8,4 +8,5 @@ __pycache__/
 app/consumer/logs/*
 app/producer/logs/*
 .env
+/app/consumer/utils/transacciones_no_procesadas.csv
 # Permitir los directorios importantes !0/

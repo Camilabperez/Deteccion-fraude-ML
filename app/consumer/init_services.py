@@ -4,7 +4,10 @@ from loguru import logger
 from service.db import crear_tabla_postgres
 from kafka_consumer import KafkaConsumerService
 
-logger.add("logs/consumer.log", rotation="1 MB", retention="10 days", level="DEBUG")
+logger.add("logs/consumer.log",
+           rotation="1 MB",
+           retention="10 days",
+           level="DEBUG")
 
 if __name__ == "__main__":
     logger.info("Iniciando servicios")

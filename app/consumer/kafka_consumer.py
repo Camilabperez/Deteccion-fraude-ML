@@ -1,6 +1,8 @@
 """
-Kafka Consumer Service - Módulo con la logica del consumo de mensajes desde Kafka, inferencia de fraude con modelo MLflow,
-registro en base de datos PostgreSQL y monitoreo de servicios como Grafana, FastAPI y MLflow.
+Kafka Consumer Service - Módulo con la logica del consumo de mensajes desde
+Kafka, inferencia de fraude con modelo MLflow,
+registro en base de datos PostgreSQL y monitoreo de servicios como Grafana,
+FastAPI y MLflow.
 """
 from threading import Thread
 from confluent_kafka import Consumer
@@ -9,26 +11,30 @@ from kafka.errors import TopicAlreadyExistsError
 from service.db import save_to_postgres, get_person_email
 from service.model import loadmodel, get_prediction
 from service.correo import send_alert_email
-from service.process_data import preprocesar_datos
+from service.process_data import validate_transaction
 from service.estado_alerta import alert_state
 from loguru import logger
 import time
-import os, json
+import os
+import json
 
-KAFKA_BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "kafka:9092")
+KAFKA_SERVER = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "kafka:9092")
 TOPIC_NAME = os.getenv("TOPIC_NAME", "fraud_transactions")
+
 
 class KafkaConsumerService:
     """
-    Servicio de consumo Kafka para procesar transacciones sospechosas de fraude.
-    Lee mensajes del tópico configurado, aplica un modelo de ML y guarda resultados en PostgreSQL.
+    Servicio de consumo Kafka para procesar transacciones sospechosas de
+    fraude.Lee mensajes del tópico configurado, aplica un modelo de ML y
+    guarda resultados en PostgreSQL.
     """
-    model = None  
+    model = None
 
-    def __init__(self, topic=TOPIC_NAME, kafka_broker=KAFKA_BOOTSTRAP_SERVERS):
-        """Inicializa el consumidor de Kafka, suscribiéndose al tópico y cargando el modelo."""
+    def __init__(self, topic=TOPIC_NAME, kafka_broker=KAFKA_SERVER):
+        """Inicializa el consumidor de Kafka, suscribiéndose al tópico y
+        cargando el modelo."""
         self.kafka_conf = {
-            'bootstrap.servers': KAFKA_BOOTSTRAP_SERVERS,
+            'bootstrap.servers': KAFKA_SERVER,
             'group.id': 'fraud_detection_group',
             'auto.offset.reset': 'earliest'
         }
@@ -40,15 +46,15 @@ class KafkaConsumerService:
 
         self.model = loadmodel()
 
-        logger.add("logs/consumer.log", rotation="1 MB", retention="10 days", level="DEBUG")
-
     def create_topic(self):
-        logger.info(f"KAFKA_BOOTSTRAP_SERVERS '{KAFKA_BOOTSTRAP_SERVERS}' .")
+        logger.info(f"KAFKA_SERVER '{KAFKA_SERVER}' .")
         logger.info(f"TOPIC_NAME '{TOPIC_NAME}' .")
         while True:
             try:
-                admin = KafkaAdminClient(bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS)
-                topic = NewTopic(name=TOPIC_NAME, num_partitions=1, replication_factor=1)
+                admin = KafkaAdminClient(bootstrap_servers=KAFKA_SERVER)
+                topic = NewTopic(name=TOPIC_NAME,
+                                 num_partitions=1,
+                                 replication_factor=1)
                 admin.create_topics([topic])
                 logger.info(f"Tópico '{TOPIC_NAME}' creado.")
                 break
@@ -60,7 +66,8 @@ class KafkaConsumerService:
                 time.sleep(5)
 
     def consume_loop(self):
-        """Loop de consumo que recibe, limpia, predice y guarda mensajes mientras el servicio esté activo."""
+        """Loop de consumo que recibe, limpia, predice y guarda mensajes
+        mientras el servicio esté activo."""
         logger.info("Esperando mensajes de Kafka...")
         while self.consuming:
             try:
@@ -74,25 +81,27 @@ class KafkaConsumerService:
                 transaction = msg.value().decode('utf-8')
                 logger.info(f"Mensaje recibido: {transaction}")
 
-                process_mnsg = preprocesar_datos(transaction)
+                process_mnsg = validate_transaction(transaction)
 
                 if process_mnsg is None:
                     logger.warning("Transacción descartada.")
                     continue
-                
                 prediction_result = get_prediction(process_mnsg, self.model)
                 prediction = prediction_result.get("prediction", "N/A")
                 logger.success(f"Predicción obtenida: {prediction}")
 
                 transaction_dict = json.loads(transaction)
-                if(prediction == "fraudulento"):
+                if (prediction == "fraudulento"):
                     if not alert_state.is_enabled():
-                        logger.warning("Alerta NO enviada: envío de alertas está deshabilitado.")
+                        logger.warning(
+                            "Alerta NO enviada: envío de alertas "
+                            "está deshabilitado.")
                     else:
                         try:
-                            email = get_person_email( int(transaction_dict.get("usuario_id")))
+                            cust_id = int(transaction_dict.get("CustomerID"))
+                            email = get_person_email(cust_id)
                             send_alert_email(email, transaction_dict)
-                        except Exception as e:  
+                        except Exception as e:
                             logger.error(f"Error mandndo correo : {e}")
 
                 save_to_postgres(prediction_result, transaction_dict)
@@ -135,9 +144,3 @@ class KafkaConsumerService:
         except Exception as e:
             logger.error(f"Error en check_kafka: {e}")
             return "🔴 No disponible"
-
-
-
-
-
-

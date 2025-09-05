@@ -1,5 +1,5 @@
 from loguru import logger
-import os, json
+import os
 from fastapi import HTTPException
 import psycopg2
 from datetime import datetime
@@ -14,6 +14,7 @@ def _pg_connect():
         host=os.getenv("POSTGRES_HOST", "localhost"),
         port=os.getenv("POSTGRES_PORT", "5432"),
     )
+
 
 def crear_tabla_postgres():
     logger.info("Conectando a PostgreSQL")
@@ -73,12 +74,13 @@ def crear_tabla_postgres():
                 pass
             time.sleep(5)
 
+
 def save_to_postgres(result, mns_dict):
     """Inserta una transacción procesada en la base de datos PostgreSQL."""
     try:
 
-        usuario_id = mns_dict.get("usuario_id", "N/A")
-        transaccion_id = mns_dict.get("transaccion_id", "N/A")
+        usuario_id = mns_dict.get("CustomerID", "N/A")
+        transaccion_id = mns_dict.get("TransactionID", "N/A")
         prediction_label = result.get("prediction", "N/A")
         category = mns_dict.get("Category", "N/A")
         transaction_amount = result.get("TransactionAmount", "N/A")
@@ -94,7 +96,8 @@ def save_to_postgres(result, mns_dict):
 
         sql = """
             INSERT INTO transacciones (
-                usuario_id, transaccion_id, FraudIndicator, Category, TransactionAmount, AnomalyScore, Amount, 
+                usuario_id, transaccion_id, FraudIndicator, Category,
+                TransactionAmount, AnomalyScore, Amount,
                 AccountBalance, SuspiciousFlag, fecha, timestamp_procesado
             ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
@@ -118,7 +121,10 @@ def save_to_postgres(result, mns_dict):
         cur.close()
         conn.close()
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error al guardar los datos en la bd: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error al guardar los datos en la bd:{str(e)}"
+            )
 
 
 def check_postgres():
@@ -129,18 +135,19 @@ def check_postgres():
         return "🟢 Conectado"
     except Exception:
         return "🔴 No disponible"
-    
+
 
 def get_person_email(usuario_id: int) -> str | None:
     """Devuelve email de Personas por id, o None si no existe."""
     try:
         conn = _pg_connect()
         with conn, conn.cursor() as cur:
-            cur.execute("SELECT email FROM personas WHERE id = %s;", (usuario_id,))
+            cur.execute(
+                "SELECT email FROM personas WHERE id = %s;", (usuario_id))
             row = cur.fetchone()
             return row[0] if row else None
     finally:
         try:
             conn.close()
-        except:
+        except Exception:
             pass

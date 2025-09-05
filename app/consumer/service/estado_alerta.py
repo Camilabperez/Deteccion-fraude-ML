@@ -1,5 +1,5 @@
-# service/alert_state.py
 import threading
+
 
 class _EstadoAlerta:
     def __init__(self, initial=True):
@@ -13,5 +13,6 @@ class _EstadoAlerta:
     def set_enabled(self, value: bool) -> None:
         with self._lock:
             self._enabled = value
+
 
 alert_state = _EstadoAlerta(initial=True)

@@ -43,6 +43,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+logger.add("logs/consumer.log",
+           rotation="1 MB",
+           retention="10 days",
+           level="DEBUG")
+
 
 @app.get("/")
 def root():

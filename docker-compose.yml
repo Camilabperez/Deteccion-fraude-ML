@@ -63,22 +63,14 @@ services:
     image: ghcr.io/mlflow/mlflow:latest
     container_name: mlflow
     ports:
-      - "8080:5000"
-    volumes:
-      - ./services/mlflow/db:/mlflow_backend
-      - ./services/mlflow/artifacts:/mlruns
-    command:
-      - "mlflow"
-      - "server"
-      - "--host"
-      - "0.0.0.0" 
-      - "--port"
-      - "5000" 
-      - "--backend-store-uri"
-      - "sqlite:////mlflow_backend/mlflow.db" 
-      - "--artifacts-destination"
-      - "/mlruns"              # dónde guarda físicamente
-      - "--serve-artifacts"    # ¡IMPORTANTE!
+      - "8080:5000"            # Host 8080 -> Contenedor 5000
+    command: >
+      mlflow server
+      --host 0.0.0.0
+      --port 5000
+      --backend-store-uri sqlite:///mlflow.db
+      --serve-artifacts
+      --artifacts-destination /mlruns 
 
   producer:
     container_name: producer

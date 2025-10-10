@@ -192,19 +192,30 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisGridShow": true,
-            "axisLabel": "Cantidad de transacciones",
-            "axisPlacement": "left",
-            "fillOpacity": 100,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "lineWidth": 0,
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
             },
             "thresholdsStyle": {
               "mode": "off"
@@ -234,29 +245,17 @@
       },
       "id": 1,
       "options": {
-        "barRadius": 0,
-        "barWidth": 0.83,
-        "colorByField": "tipo",
-        "fullHighlight": false,
-        "groupWidth": 0.7,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
         },
-        "orientation": "vertical",
-        "showValue": "auto",
-        "stacking": "none",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
-          "sort": "desc"
-        },
-        "xField": "time",
-        "xTickLabelMaxLength": 7,
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 100
+          "sort": "none"
+        }
       },
       "pluginVersion": "12.0.1",
       "targets": [
@@ -269,7 +268,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  $__timeGroup(timestamp_procesado, '1s', 0) AS time,\r\n  COUNT(*) AS \"transacciones fraudulentas\"\r\nFROM transacciones\r\nWHERE $__timeFilter(timestamp_procesado) AND fraudindicator = 'fraudulento'\r\nGROUP BY time, FraudIndicator\r\nORDER BY time",
+          "rawSql": "SELECT\r\n  $__timeGroup(timestamp_procesado, '1s', 0) AS time,\r\n  COUNT(*) AS \"transacciones fraudulentas\"\r\nFROM transacciones\r\nWHERE $__timeFilter(timestamp_procesado) AND fraudindicator = 'fraudulento'\r\nGROUP BY timestamp_procesado, FraudIndicator\r\nORDER BY timestamp_procesado",
           "refId": "A",
           "sql": {
             "columns": [
@@ -337,7 +336,7 @@
         }
       ],
       "title": "Evolucion de transacciones a lo largo del tiempo",
-      "type": "barchart"
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -938,5 +937,5 @@
   "timezone": "browser",
   "title": "Transacciones bancarias",
   "uid": "bejbbm1isv20wf",
-  "version": 3
+  "version": 5
 }
